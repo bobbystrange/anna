@@ -1,0 +1,26 @@
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+jar.enabled = true
+
+dependencies {
+    implementation "org.dreamcat:common-core:0.0.1"
+    implementation "org.dreamcat:common-x:0.0.1"
+    implementation "org.dreamcat:common-web:0.0.1"
+    implementation "org.dreamcat:common-webmvc:0.0.1"
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    runtimeOnly 'mysql:mysql-connector-java:8.0.19'
+}
+
+test {
+    useJUnitPlatform()
+}
