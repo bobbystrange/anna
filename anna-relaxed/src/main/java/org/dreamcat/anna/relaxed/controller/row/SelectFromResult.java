@@ -1,4 +1,4 @@
-package org.dreamcat.anna.relaxed.controller;
+package org.dreamcat.anna.relaxed.controller.row;
 
 import lombok.Data;
 import org.dreamcat.anna.relaxed.core.NameValuePair;

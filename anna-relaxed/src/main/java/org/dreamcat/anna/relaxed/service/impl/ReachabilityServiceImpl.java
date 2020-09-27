@@ -1,8 +1,8 @@
 package org.dreamcat.anna.relaxed.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.dreamcat.anna.relaxed.service.ReachabilityService;
 import org.dreamcat.anna.relaxed.component.RelatedEntityComponent;
+import org.dreamcat.anna.relaxed.service.ReachabilityService;
 import org.dreamcat.common.util.ObjectUtil;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class ReachabilityServiceImpl implements ReachabilityService {
         }
 
         var fields = expression.split("\\.");
-        for (int i = 0, size = fields.length; i<size; i++) {
+        for (int i = 0, size = fields.length; i < size; i++) {
             var field = fields[i];
             var object = relatedObjects.get(field);
             if (object == null) return false;
@@ -65,12 +65,13 @@ public class ReachabilityServiceImpl implements ReachabilityService {
         // (entityName, columnName, columnValues)
         var entityCache = new HashMap<String, List<Map<String, Object>>>();
         var list = new ArrayList<>();
-        outer: for (var expression: expressions) {
+        outer:
+        for (var expression : expressions) {
             var fields = expression.split("\\.");
             var entityName = relatedObject.getEntityName();
             Collection<Object> columnValues = Collections.singleton(columnValue);
             var entityRelatedObject = relatedObject;
-            for (int i = 0, size = fields.length; i<size; i++) {
+            for (int i = 0, size = fields.length; i < size; i++) {
                 var field = fields[i];
                 var child = entityRelatedObject.getChildren().get(field);
                 if (child == null) {

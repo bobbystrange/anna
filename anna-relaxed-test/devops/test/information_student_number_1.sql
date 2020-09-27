@@ -1,4 +1,7 @@
-select id, name, source from column_def where table_id = 2 order by id;
+select id, name, source
+from column_def
+where table_id = 2
+order by id;
 /*
 +------+----------------------+---------------------------------------------------------------+
 | id   | name                 | source                                                        |
@@ -143,65 +146,123 @@ curl -v -H 'Content-Type: application/json' http://localhost:8080/metadata/def/t
 
 
 -- name
-select distinct name from student where number = 'student_number_1';
+select distinct name
+from student
+where number = 'student_number_1';
 
 -- MealCard.number
-select distinct number from meal_card where student_id in (
-    select id from student where number = 'student_number_1'
+select distinct number
+from meal_card
+where student_id in (
+    select id
+    from student
+    where number = 'student_number_1'
 );
 
 -- MealCard.Canteen.location
-select distinct location from canteen where id in (
-    select canteen_id from meal_card where student_id in (
-        select id from student where number = 'student_number_1'
+select distinct location
+from canteen
+where id in (
+    select canteen_id
+    from meal_card
+    where student_id in (
+        select id
+        from student
+        where number = 'student_number_1'
     )
 );
 
 -- MealCard.Agency.manager
-select distinct manager from agency where meal_card_type in (
-    select type from meal_card where student_id in (
-        select id from student where number = 'student_number_1'
+select distinct manager
+from agency
+where meal_card_type in (
+    select type
+    from meal_card
+    where student_id in (
+        select id
+        from student
+        where number = 'student_number_1'
     )
 );
 
 -- Person.age
-select distinct age from person where code in (
-    select person_code from student where number = 'student_number_1'
+select distinct age
+from person
+where code in (
+    select person_code
+    from student
+    where number = 'student_number_1'
 );
 
 -- Person.Suits.number
-select distinct number from suits where person_id in (
-    select id from person where code in (
-        select person_code from student where number = 'student_number_1'
+select distinct number
+from suits
+where person_id in (
+    select id
+    from person
+    where code in (
+        select person_code
+        from student
+        where number = 'student_number_1'
     )
 );
 -- Person.Suit.color
-select distinct color from suit where suits_id in (
-    select id from suits where person_id in (
-        select id from person where code in (
-            select person_code from student where number = 'student_number_1'
+select distinct color
+from suit
+where suits_id in (
+    select id
+    from suits
+    where person_id in (
+        select id
+        from person
+        where code in (
+            select person_code
+            from student
+            where number = 'student_number_1'
         )
     )
 );
 
 -- Person.Suit.Maker.name
-select distinct name from maker where id in (
-    select maker_id from suit where suits_id in (
-        select id from suits where person_id in (
-            select id from person where code in (
-                select person_code from student where number = 'student_number_1'
+select distinct name
+from maker
+where id in (
+    select maker_id
+    from suit
+    where suits_id in (
+        select id
+        from suits
+        where person_id in (
+            select id
+            from person
+            where code in (
+                select person_code
+                from student
+                where number = 'student_number_1'
             )
         )
     )
 );
 
 -- Person.Suit.SuitMaintenanceRelation.Maintenance.seq
-select distinct seq from maintenance where seq in (
-    select `seq` as suit_maintenance_seq from suit_maintenance_relation where suit_id in (
-        select id from suit where suits_id in (
-            select id from suits where person_id in (
-                select id from person where code in (
-                    select person_code from student where number = 'student_number_1'
+select distinct seq
+from maintenance
+where seq in (
+    select `seq` as suit_maintenance_seq
+    from suit_maintenance_relation
+    where suit_id in (
+        select id
+        from suit
+        where suits_id in (
+            select id
+            from suits
+            where person_id in (
+                select id
+                from person
+                where code in (
+                    select person_code
+                    from student
+                    where number = 'student_number_1'
                 )
             )
         )
@@ -209,12 +270,24 @@ select distinct seq from maintenance where seq in (
 );
 
 -- Room.Desk.Chair.ChairMaintenanceRelation.Maintenance.standard
-select distinct standard from maintenance where id in (
-    select maintenance_id from chair_maintenance_relation where chair_seq in (
-        select seq from chair where desk_id in (
-            select id from desk where room_name in (
-                select name from room where id in (
-                    select room_id from student where number = 'student_number_1'
+select distinct standard
+from maintenance
+where id in (
+    select maintenance_id
+    from chair_maintenance_relation
+    where chair_seq in (
+        select seq
+        from chair
+        where desk_id in (
+            select id
+            from desk
+            where room_name in (
+                select name
+                from room
+                where id in (
+                    select room_id
+                    from student
+                    where number = 'student_number_1'
                 )
             )
         )
@@ -222,11 +295,21 @@ select distinct standard from maintenance where id in (
 );
 
 -- Room.Desk.Chair.Supplier.name
-select name from supplier where id in (
-    select supplier_id from chair where desk_id in (
-        select id from desk where room_name in (
-            select name from room where id in (
-                select room_id from student where number = 'student_number_1'
+select name
+from supplier
+where id in (
+    select supplier_id
+    from chair
+    where desk_id in (
+        select id
+        from desk
+        where room_name in (
+            select name
+            from room
+            where id in (
+                select room_id
+                from student
+                where number = 'student_number_1'
             )
         )
     )
@@ -234,17 +317,31 @@ select name from supplier where id in (
 
 
 -- Room.Door.code
-select code from door where code in (
-    select door_code from room where id in (
-        select room_id from student where number = 'student_number_1'
+select code
+from door
+where code in (
+    select door_code
+    from room
+    where id in (
+        select room_id
+        from student
+        where number = 'student_number_1'
     )
 );
 
 -- Room.Door.Supplier.name
-select name from supplier where id in (
-    select supplier_id from door where code in (
-        select door_code from room where id in (
-            select room_id from student where number = 'student_number_1'
+select name
+from supplier
+where id in (
+    select supplier_id
+    from door
+    where code in (
+        select door_code
+        from room
+        where id in (
+            select room_id
+            from student
+            where number = 'student_number_1'
         )
     )
 );

@@ -4,30 +4,18 @@
 - 自定义租户隔离的数据表及对其的增删改查
 - 创建基于**取值表达式**和已有数据表的视图
 
-取值表达式的例子，参考 **anna-relaxed-test** 模块
-```Anna Query Language 
-# 创建一个基于Student实体的number字段的视图，取名为Information
-create view Information from Student at number(
-    staff,
-    comment,
-    name = $name,
-    meal_card_number = $MealCard.number,
-    canteen_location = $MealCard.Canteen.location,
-    agency_manager = $MealCard.Agency.manager,
-    person_age = $Person.age,
-    suits_number = $Person.Suits.number,
-    suit_color = $Person.Suits.Suit.color,
-    maker_name = $Person.Suits.Suit.Maker.name,
-    suit_maintenance_seq = $Person.Suits.Suit.SuitMaintenanceRelation.Maintenance.seq,
-    chair_maintenance_standard = $Room.Desk.Chair.ChairMaintenanceRelation.Maintenance.standard,
-    chair_supplier_name = $Room.Desk.Chair.Supplier.name,
-    door_size = $Room.Door.size,
-    door_supplier_name = $Room.Door.Supplier.name,
-);
-```
+> 取值表达式的例子，参考 **anna-relaxed-test** 模块
+
+### 示例
+##### 示例执行步骤
+- 执行SQL `anna-relaxed/devops/migarte/anna_relaxed.ddl.sql`
+ 和 `anna-relaxed-test/devops/test/information.sql`
+- 运行**anna-relaxed-test**模块
+
+##### 示例结果
 ```shell script
 # 查询实体Student实体的number字段为 "student_number_1"的Information视图
-curl -v -H 'Content-Type: application/json' http://localhost:8080/metadata/def/table/select -d '
+curl -v -H 'Content-Type: application/json' http://localhost:8080/api/v1/row/select -d '
 {
   "table": "information",
   "value": "student_number_1"
@@ -130,4 +118,27 @@ curl -v -H 'Content-Type: application/json' http://localhost:8080/metadata/def/t
     },
     "success": true
 }
+```
+
+### 待实现
+- AQL(Anna Query Language )查询语言
+```aql
+# 创建一个基于Student实体的number字段的视图，取名为Information
+create view Information from Student at number(
+    staff,
+    comment,
+    name = $name,
+    meal_card_number = $MealCard.number,
+    canteen_location = $MealCard.Canteen.location,
+    agency_manager = $MealCard.Agency.manager,
+    person_age = $Person.age,
+    suits_number = $Person.Suits.number,
+    suit_color = $Person.Suits.Suit.color,
+    maker_name = $Person.Suits.Suit.Maker.name,
+    suit_maintenance_seq = $Person.Suits.Suit.SuitMaintenanceRelation.Maintenance.seq,
+    chair_maintenance_standard = $Room.Desk.Chair.ChairMaintenanceRelation.Maintenance.standard,
+    chair_supplier_name = $Room.Desk.Chair.Supplier.name,
+    door_size = $Room.Door.size,
+    door_supplier_name = $Room.Door.Supplier.name,
+);
 ```

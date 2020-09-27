@@ -1,9 +1,7 @@
 package org.dreamcat.anna.relaxed.service;
 
-import org.dreamcat.anna.relaxed.controller.CreateTableQuery;
-import org.dreamcat.anna.relaxed.controller.InsertIntoQuery;
-import org.dreamcat.anna.relaxed.controller.SelectFromQuery;
-import org.dreamcat.anna.relaxed.controller.SelectFromResult;
+import org.dreamcat.anna.relaxed.controller.table.CreateOrAlterTableQuery;
+import org.dreamcat.anna.relaxed.controller.table.DescTableResult;
 import org.dreamcat.common.web.core.RestBody;
 
 /**
@@ -11,9 +9,11 @@ import org.dreamcat.common.web.core.RestBody;
  */
 public interface TableService {
 
-    RestBody<?> createTable(CreateTableQuery query);
+    RestBody<?> createTable(CreateOrAlterTableQuery query);
 
-    RestBody<?> insertInto(InsertIntoQuery query);
+    RestBody<?> dropTable(String name);
 
-    RestBody<SelectFromResult> selectFrom(SelectFromQuery query);
+    RestBody<DescTableResult> descTable(String name);
+
+    RestBody<?> alterTable(CreateOrAlterTableQuery query);
 }

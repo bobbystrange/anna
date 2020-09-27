@@ -36,7 +36,7 @@ create table if not exists `row_data` (
     `create_time`   timestamp       not null default current_timestamp,
     `update_time`   timestamp       not null default current_timestamp on update current_timestamp,
     `table_id`      bigint unsigned not null,
-    `primary_value` varchar(255) not null,
+    `primary_value` varchar(255)    not null,
     `column_id`     bigint unsigned not null,
     `value`         varchar(255)    not null,
     primary key (`id`),

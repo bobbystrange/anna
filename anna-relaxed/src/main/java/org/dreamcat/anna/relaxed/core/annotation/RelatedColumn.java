@@ -12,6 +12,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RelatedColumn {
     String name() default "";
+
     String column();
+
     String relatedColumn();
 }

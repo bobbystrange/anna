@@ -17,13 +17,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
  * Create by tuke on 2020/9/17
- *
+ * <p>
  * it will not be initialized until referenced by another bean or explicitly retrieved
  */
 @Slf4j
@@ -95,19 +94,19 @@ public class SimpleRelatedEntityComponent implements RelatedEntityComponent {
     public void initEntityRepositories() {
         entityRepositories = new HashMap<>();
         var entries = relatedObjectClasses.entrySet();
-        for (var entry: entries) {
+        for (var entry : entries) {
             var tableName = entry.getKey();
             var entityClass = entry.getValue();
             var relatedObject = relatedObjects.get(entityClass);
             if (relatedObject == null) continue;
 
             var columnNames = relatedObject.getColumnNames();
-            if(ObjectUtil.isEmpty(columnNames)) continue;
+            if (ObjectUtil.isEmpty(columnNames)) continue;
 
             var indexes = relatedObject.getIndexes();
             var repositories = entityRepositories.computeIfAbsent(tableName, it -> new HashMap<>());
             var columnNameSql = String.join("`, `", columnNames);
-            for (var index: indexes) {
+            for (var index : indexes) {
                 repositories.putIfAbsent(index, columnValues -> {
                     var sql = String.format("select `%s` from `%s` where `%s` in %s",
                             columnNameSql, tableName, index, concatInSql(columnValues));
@@ -115,7 +114,7 @@ public class SimpleRelatedEntityComponent implements RelatedEntityComponent {
                             sql, (rs, rowNum) -> {
                                 var map = new HashMap<String, Object>();
                                 int i = 0;
-                                for (var column: columnNames) {
+                                for (var column : columnNames) {
                                     map.put(column, rs.getObject(++i));
                                 }
                                 return map;
@@ -154,7 +153,7 @@ public class SimpleRelatedEntityComponent implements RelatedEntityComponent {
                 return it.toString();
             } else if (it != null) {
                 return String.format("\"%s\"", it);
-            } else return String.valueOf((Object)null);
+            } else return String.valueOf((Object) null);
         }).collect(Collectors.joining(",")) + ")";
     }
 }

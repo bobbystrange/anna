@@ -1,4 +1,4 @@
-package org.dreamcat.anna.relaxed.controller;
+package org.dreamcat.anna.relaxed.controller.row;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  * Create by tuke on 2020/9/14
  */
 @Data
-public class InsertIntoQuery {
+public class InsertIntoOrUpdateSetQuery {
     private String table;
 
     @NotEmpty
@@ -28,7 +28,7 @@ public class InsertIntoQuery {
 
     public int countColumnSize() {
         return columns.stream()
-                .map(InsertIntoQuery.ColumnParam::getName)
+                .map(InsertIntoOrUpdateSetQuery.ColumnParam::getName)
                 .collect(Collectors.toSet())
                 .size();
     }

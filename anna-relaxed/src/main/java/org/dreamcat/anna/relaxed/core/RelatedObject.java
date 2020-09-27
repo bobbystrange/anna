@@ -176,7 +176,7 @@ public class RelatedObject {
         public RelatedObject toRelatedObject() {
             if (ObjectUtil.isNotEmpty(childNodes)) {
                 var children = new HashMap<String, RelatedObject>();
-                for (var child: childNodes) {
+                for (var child : childNodes) {
                     children.put(child.name, child.toRelatedObject());
                 }
                 relatedObject.children = children;

@@ -4,26 +4,15 @@
 - Custom-defined data table and its CURD
 - Data view includes expressions
 
-To see the expressions, please have a look at the module **anna-relaxed-test**
-```Anna Query Language 
-create view Information from Student at number(
-    staff,
-    comment,
-    name = $name,
-    meal_card_number = $MealCard.number,
-    canteen_location = $MealCard.Canteen.location,
-    agency_manager = $MealCard.Agency.manager,
-    person_age = $Person.age,
-    suits_number = $Person.Suits.number,
-    suit_color = $Person.Suits.Suit.color,
-    maker_name = $Person.Suits.Suit.Maker.name,
-    suit_maintenance_seq = $Person.Suits.Suit.SuitMaintenanceRelation.Maintenance.seq,
-    chair_maintenance_standard = $Room.Desk.Chair.ChairMaintenanceRelation.Maintenance.standard,
-    chair_supplier_name = $Room.Desk.Chair.Supplier.name,
-    door_size = $Room.Door.size,
-    door_supplier_name = $Room.Door.Supplier.name,
-);
-```
+> To see the expressions, please have a look at the module **anna-relaxed-test**
+
+### Example
+##### Steps
+- execute SQL `anna-relaxed/devops/migarte/anna_relaxed.ddl.sql`
+ and `anna-relaxed-test/devops/test/information.sql`
+- execute the module **anna-relaxed-test**
+
+##### Result
 ```shell script
 curl -v -H 'Content-Type: application/json' http://localhost:8080/metadata/def/table/select -d '
 {
@@ -128,4 +117,25 @@ curl -v -H 'Content-Type: application/json' http://localhost:8080/metadata/def/t
     },
     "success": true
 }
+```
+### Todo
+- Anna Query Language 
+```aql
+create view Information from Student at number(
+    staff,
+    comment,
+    name = $name,
+    meal_card_number = $MealCard.number,
+    canteen_location = $MealCard.Canteen.location,
+    agency_manager = $MealCard.Agency.manager,
+    person_age = $Person.age,
+    suits_number = $Person.Suits.number,
+    suit_color = $Person.Suits.Suit.color,
+    maker_name = $Person.Suits.Suit.Maker.name,
+    suit_maintenance_seq = $Person.Suits.Suit.SuitMaintenanceRelation.Maintenance.seq,
+    chair_maintenance_standard = $Room.Desk.Chair.ChairMaintenanceRelation.Maintenance.standard,
+    chair_supplier_name = $Room.Desk.Chair.Supplier.name,
+    door_size = $Room.Door.size,
+    door_supplier_name = $Room.Door.Supplier.name,
+);
 ```
