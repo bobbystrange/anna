@@ -1,8 +1,7 @@
-package org.dreamcat.anna.relaxed.entity.strategy;
+package org.dreamcat.anna.relaxed.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.dreamcat.anna.relaxed.entity.BaseEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +14,7 @@ import javax.persistence.Table;
 @Setter
 @Table
 @Entity(name = "select_value_strategy")
-public class SelectValueStrategy extends BaseEntity {
+public class SelectValueStrategyEntity extends BaseEntity {
     @Column(name = "table_id")
     private Long tableId;
     @Column(name = "column_id")

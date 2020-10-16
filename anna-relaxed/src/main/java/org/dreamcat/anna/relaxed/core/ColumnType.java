@@ -1,4 +1,4 @@
-package org.dreamcat.anna.relaxed.entity.strategy;
+package org.dreamcat.anna.relaxed.core;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ColumnType {
-    SOURCE(0),
     TEXT(1),
     NUMERIC(2),
     DATE(3),

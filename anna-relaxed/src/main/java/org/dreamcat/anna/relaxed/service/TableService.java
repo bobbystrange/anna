@@ -1,7 +1,7 @@
 package org.dreamcat.anna.relaxed.service;
 
-import org.dreamcat.anna.relaxed.controller.table.CreateOrAlterTableQuery;
-import org.dreamcat.anna.relaxed.controller.table.DescTableResult;
+import org.dreamcat.anna.relaxed.controller.table.query.CreateOrAlterTableQuery;
+import org.dreamcat.anna.relaxed.controller.table.result.DescTableResult;
 import org.dreamcat.common.web.core.RestBody;
 
 /**

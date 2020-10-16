@@ -2,6 +2,8 @@ package org.dreamcat.anna.relaxed.controller.table;
 
 import lombok.RequiredArgsConstructor;
 import org.dreamcat.anna.relaxed.config.AppConfig;
+import org.dreamcat.anna.relaxed.controller.table.query.CreateOrAlterTableQuery;
+import org.dreamcat.anna.relaxed.controller.table.result.DescTableResult;
 import org.dreamcat.anna.relaxed.service.TableService;
 import org.dreamcat.common.web.core.RestBody;
 import org.springframework.web.bind.annotation.RequestBody;

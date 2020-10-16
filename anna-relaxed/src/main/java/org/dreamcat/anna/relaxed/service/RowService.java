@@ -1,9 +1,9 @@
 package org.dreamcat.anna.relaxed.service;
 
-import org.dreamcat.anna.relaxed.controller.row.DeleteFromQuery;
-import org.dreamcat.anna.relaxed.controller.row.InsertIntoOrUpdateSetQuery;
-import org.dreamcat.anna.relaxed.controller.row.SelectFromQuery;
-import org.dreamcat.anna.relaxed.controller.row.SelectFromResult;
+import org.dreamcat.anna.relaxed.controller.row.query.DeleteFromQuery;
+import org.dreamcat.anna.relaxed.controller.row.query.InsertIntoOrUpdateSetQuery;
+import org.dreamcat.anna.relaxed.controller.row.query.SelectFromQuery;
+import org.dreamcat.anna.relaxed.controller.row.result.SelectFromResult;
 import org.dreamcat.common.web.core.RestBody;
 
 /**

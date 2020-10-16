@@ -1,24 +1,22 @@
-package org.dreamcat.anna.relaxed.controller.table;
+package org.dreamcat.anna.relaxed.controller.view.result;
 
 import lombok.Data;
-import org.dreamcat.anna.relaxed.entity.strategy.ColumnType;
 
 import java.util.List;
 
 /**
- * Create by tuke on 2020/9/27
+ * Create by tuke on 2020/10/15
  */
 @Data
-public class DescTableResult {
+public class DescViewResult {
     private String name;
     private String displayName;
-    private List<ColumnResult> columns;
+    private List<FieldResult> fields;
 
     @Data
-    public static class ColumnResult {
+    public static class FieldResult {
         private String name;
         private String displayName;
-        private ColumnType type;
         private String source;
         private Boolean primary;
         private Boolean required;

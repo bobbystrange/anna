@@ -1,10 +1,10 @@
 package org.dreamcat.anna.relaxed.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.dreamcat.anna.relaxed.core.ColumnType;
 import org.dreamcat.anna.relaxed.core.ValueStrategy;
 import org.dreamcat.anna.relaxed.dao.SelectValueStrategyDao;
-import org.dreamcat.anna.relaxed.entity.strategy.ColumnType;
-import org.dreamcat.anna.relaxed.entity.strategy.SelectValueStrategy;
+import org.dreamcat.anna.relaxed.entity.SelectValueStrategyEntity;
 import org.dreamcat.anna.relaxed.service.RowValueService;
 import org.dreamcat.common.util.StringUtil;
 import org.dreamcat.common.util.TimeUtil;
@@ -110,7 +110,7 @@ public class RowValueServiceImpl implements RowValueService {
                 var selectValues = selectMap.get(columnId);
                 if (selectValues == null) {
                     selectValues = selectValueStrategyDao.findAllByTenantIdAndColumnId(tenantId, columnId).stream()
-                            .map(SelectValueStrategy::getValue)
+                            .map(SelectValueStrategyEntity::getValue)
                             .collect(Collectors.toSet());
                     selectMap.put(columnId, selectValues);
                 }

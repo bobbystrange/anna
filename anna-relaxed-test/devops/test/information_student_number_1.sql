@@ -1,10 +1,10 @@
-select id, name, source
-from column_def
-where table_id = 2
+select id, name, expression
+from view_field_def
+where view_id = 2
 order by id;
 /*
 +------+----------------------+---------------------------------------------------------------+
-| id   | name                 | source                                                        |
+| id   | name                 | expression                                                        |
 +------+----------------------+---------------------------------------------------------------+
 | 2001 | staff                | NULL                                                          |
 | 2002 | comment              | NULL                                                          |
@@ -24,13 +24,13 @@ order by id;
 +------+----------------------+---------------------------------------------------------------+
 
 # Request:
-curl -v -H 'Content-Type: application/json' http://localhost:8080/metadata/def/table/select -d '
+curl -v -H 'Content-Type: application/json' http://localhost:8080/api/v1/view/query -d '
 {
-  "table": "information",
+  "view": "information",
   "value": "student_number_1"
 }'
 
-curl -v -H 'Content-Type: application/json' http://localhost:8080/metadata/def/table/insert -d '
+curl -v -H 'Content-Type: application/json' http://localhost:8080/api/v1/table/insert -d '
 {
     "name": "information",
     "columns": [

@@ -56,3 +56,31 @@ create table if not exists `select_value_strategy` (
     key `idx_column_id` (`column_id`)
 ) engine = InnoDB
   default charset = utf8mb4;
+
+create table if not exists `view_def` (
+    `id`            bigint unsigned not null auto_increment,
+    `tenant_id`     bigint unsigned not null,
+    `create_time`   timestamp       not null default current_timestamp,
+    `update_time`   timestamp       not null default current_timestamp on update current_timestamp,
+    `name`          varchar(100)    not null,
+    `display_name`  varchar(100)    not null,
+    `source_table`  varchar(100)    not null,
+    `source_column` varchar(100)    not null,
+    primary key (`id`),
+    unique key `idx_tenant_id_name` (`tenant_id`, `name`)
+) engine = InnoDB
+  default charset = utf8mb4;
+
+create table if not exists `view_field_def` (
+    `id`           bigint unsigned not null auto_increment,
+    `tenant_id`    bigint unsigned not null,
+    `create_time`  timestamp       not null default current_timestamp,
+    `update_time`  timestamp       not null default current_timestamp on update current_timestamp,
+    `view_id`      bigint unsigned not null,
+    `name`         varchar(100)    not null,
+    `display_name` varchar(100)    not null,
+    `expression`   varchar(511)    not null,
+    primary key (`id`),
+    unique key `idx_view_id_name` (`view_id`, `name`)
+) engine = InnoDB
+  default charset = utf8mb4;

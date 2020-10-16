@@ -2,8 +2,8 @@ package org.dreamcat.anna.relaxed.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.dreamcat.anna.relaxed.config.Auth;
-import org.dreamcat.anna.relaxed.controller.table.CreateOrAlterTableQuery;
-import org.dreamcat.anna.relaxed.controller.table.DescTableResult;
+import org.dreamcat.anna.relaxed.controller.table.query.CreateOrAlterTableQuery;
+import org.dreamcat.anna.relaxed.controller.table.result.DescTableResult;
 import org.dreamcat.anna.relaxed.dao.ColumnDefDao;
 import org.dreamcat.anna.relaxed.dao.TableDefDao;
 import org.dreamcat.anna.relaxed.entity.ColumnDefEntity;
@@ -11,6 +11,7 @@ import org.dreamcat.anna.relaxed.entity.TableDefEntity;
 import org.dreamcat.anna.relaxed.service.TableService;
 import org.dreamcat.common.web.core.RestBody;
 import org.dreamcat.common.web.exception.BadRequestException;
+import org.dreamcat.common.web.exception.NotFoundException;
 import org.dreamcat.common.web.util.BeanCopierUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -74,7 +75,7 @@ public class TableServiceImpl implements TableService {
         var tenantId = Auth.getTenantId();
         var table = tableDefDao.findByTenantIdAndName(tenantId, name);
         if (table == null) {
-            return RestBody.error(String.format("table '%s' doesn't exist", name));
+            throw new NotFoundException(String.format("table '%s' doesn't exist", name));
         }
         var tableId = table.getId();
 
@@ -87,7 +88,7 @@ public class TableServiceImpl implements TableService {
         var tenantId = Auth.getTenantId();
         var table = tableDefDao.findByTenantIdAndName(tenantId, name);
         if (table == null) {
-            return RestBody.error(String.format("table '%s' doesn't exist", name));
+            throw new NotFoundException(String.format("table '%s' doesn't exist", name));
         }
         var tableId = table.getId();
 
@@ -112,7 +113,7 @@ public class TableServiceImpl implements TableService {
         var name = query.getName();
         var table = tableDefDao.findByTenantIdAndName(tenantId, name);
         if (table == null) {
-            return RestBody.error(String.format("table '%s' doesn't exist", name));
+            throw new NotFoundException(String.format("table '%s' doesn't exist", name));
         }
         var tableId = table.getId();
 

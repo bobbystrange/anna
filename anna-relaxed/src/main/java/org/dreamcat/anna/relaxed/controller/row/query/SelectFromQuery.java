@@ -1,4 +1,4 @@
-package org.dreamcat.anna.relaxed.controller.row;
+package org.dreamcat.anna.relaxed.controller.row.query;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

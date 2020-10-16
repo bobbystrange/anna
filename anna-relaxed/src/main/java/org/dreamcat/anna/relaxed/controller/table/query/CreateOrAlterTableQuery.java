@@ -1,8 +1,8 @@
-package org.dreamcat.anna.relaxed.controller.table;
+package org.dreamcat.anna.relaxed.controller.table.query;
 
 import lombok.Data;
+import org.dreamcat.anna.relaxed.core.ColumnType;
 import org.dreamcat.anna.relaxed.entity.ColumnDefEntity;
-import org.dreamcat.anna.relaxed.entity.strategy.ColumnType;
 import org.dreamcat.common.web.jackson.GenericDeserialize;
 
 import javax.validation.constraints.NotEmpty;
