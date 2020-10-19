@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -71,7 +72,7 @@ public class ReachabilityServiceImpl implements ReachabilityService {
             var fields = expression.split("\\.");
             var entityName = relatedObject.getEntityName();
             var entityColumnName = columnName;
-            Collection<Object> columnValues = Collections.singleton(columnValue);
+            Set<Object> columnValues = Collections.singleton(columnValue);
             var entityRelatedObject = relatedObject;
             for (int i = 0, size = fields.length; i < size; i++) {
                 var field = fields[i];
@@ -150,7 +151,7 @@ public class ReachabilityServiceImpl implements ReachabilityService {
             var fields = expression.split("\\.");
             var entityName = relatedObject.getEntityName();
             String entityColumnName = columnName;
-            Collection<Object> columnValues = Collections.singleton(columnValue);
+            Set<Object> columnValues = Collections.singleton(columnValue);
             var entityRelatedObject = relatedObject;
             Map<String, Object> currentMap = map;
             for (int i = 0, size = fields.length; i < size; i++) {
@@ -205,7 +206,7 @@ public class ReachabilityServiceImpl implements ReachabilityService {
 
     private List<Map<String, Object>> fetchEntities(
             Map<String, Map<String, Map<Object, List<Map<String, Object>>>>> entityCache, String entityName,
-            String columnName, Collection<Object> columnValues) {
+            String columnName, Set<Object> columnValues) {
         var cache = entityCache.computeIfAbsent(entityName, entityNameKey -> new HashMap<>())
                 .computeIfAbsent(columnName, columnNameKey -> new HashMap<>());
 
@@ -216,9 +217,14 @@ public class ReachabilityServiceImpl implements ReachabilityService {
             Map<Object, List<Map<String, Object>>> entityMap = entities.stream()
                     .collect(Collectors.groupingBy(entity -> entity.get(columnName)));
             cache.putAll(entityMap);
+            // no filtering
+            return entityMap.values().stream()
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
         }
 
         return cache.values().stream()
+                .filter(columnValues::contains)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
