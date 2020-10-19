@@ -1,6 +1,7 @@
 package org.dreamcat.anna.relaxed.service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Create by tuke on 2020/9/14
@@ -24,5 +25,12 @@ public interface ReachabilityService {
      * @param columnValue the value of the related column
      * @return values which will be evaluated dynamically
      */
-    List<?> parse(List<String> expressions, String tableName, String columnName, String columnValue);
+    List<?> parse(List<String> expressions, String tableName, String columnName, String columnValue, List<String> conditionArgs);
+
+    /**
+     * return as Map
+     */
+    Map<String, ?> parseAsMap(List<String> expressions, String tableName, String columnName, String columnValue, List<String> conditionArgs);
+
+    Map<String, ?> parseAsExampleMap(List<String> expressions, String tableName, String columnName, String columnValue, List<String> conditionArgs);
 }

@@ -3,13 +3,15 @@ package org.dreamcat.anna.relaxed.core;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.dreamcat.common.web.data.IntEnumAttribute;
+import org.dreamcat.common.web.data.IntEnumAttributeConverter;
 
 /**
  * Create by tuke on 2020/9/12
  */
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public enum ColumnType {
+public enum ColumnType implements IntEnumAttribute {
     TEXT(1),
     NUMERIC(2),
     DATE(3),
@@ -22,4 +24,11 @@ public enum ColumnType {
     SELECT_MANY_NUMERIC(10);
 
     private final int value;
+
+    @javax.persistence.Converter(autoApply = true)
+    public static class Converter extends IntEnumAttributeConverter<ColumnType> {
+        public Converter() {
+            super(ColumnType.class);
+        }
+    }
 }

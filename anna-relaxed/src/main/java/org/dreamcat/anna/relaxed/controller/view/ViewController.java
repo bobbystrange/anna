@@ -5,7 +5,7 @@ import org.dreamcat.anna.relaxed.config.AppConfig;
 import org.dreamcat.anna.relaxed.controller.view.query.CreateOrAlterViewQuery;
 import org.dreamcat.anna.relaxed.controller.view.query.QueryViewQuery;
 import org.dreamcat.anna.relaxed.controller.view.result.DescViewResult;
-import org.dreamcat.anna.relaxed.controller.view.result.QueryViewResult;
+import org.dreamcat.anna.relaxed.core.NameValuePair;
 import org.dreamcat.anna.relaxed.service.ViewService;
 import org.dreamcat.common.web.core.RestBody;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Create by tuke on 2020/10/15
@@ -46,7 +48,17 @@ public class ViewController {
     }
 
     @RequestMapping(path = "/query", method = RequestMethod.POST)
-    public RestBody<QueryViewResult> queryView(@Valid @RequestBody QueryViewQuery query) {
+    public RestBody<List<NameValuePair>> queryView(@Valid @RequestBody QueryViewQuery query) {
         return service.queryView(query);
+    }
+
+    @RequestMapping(path = "/query/map/example", method = RequestMethod.POST)
+    public RestBody<Map<String, ?>> queryViewAsExampleMap(@Valid @RequestBody QueryViewQuery query) {
+        return service.queryViewAsExampleMap(query);
+    }
+
+    @RequestMapping(path = "/query/map", method = RequestMethod.POST)
+    public RestBody<Map<String, ?>> queryViewAsMap(@Valid @RequestBody QueryViewQuery query) {
+        return service.queryViewAsMap(query);
     }
 }

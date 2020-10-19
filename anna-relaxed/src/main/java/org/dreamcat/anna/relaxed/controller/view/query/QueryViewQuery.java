@@ -16,4 +16,6 @@ public class QueryViewQuery {
     private String value;
     @Size(min = 1)
     private List<String> fields;
+    @Size(min = 1)
+    private List<String> conditionArgs;
 }

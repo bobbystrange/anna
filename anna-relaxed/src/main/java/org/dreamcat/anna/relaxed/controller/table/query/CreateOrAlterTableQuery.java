@@ -2,7 +2,6 @@ package org.dreamcat.anna.relaxed.controller.table.query;
 
 import lombok.Data;
 import org.dreamcat.anna.relaxed.core.ColumnType;
-import org.dreamcat.anna.relaxed.entity.ColumnDefEntity;
 import org.dreamcat.common.web.jackson.GenericDeserialize;
 
 import javax.validation.constraints.NotEmpty;
@@ -33,10 +32,6 @@ public class CreateOrAlterTableQuery {
         private Boolean primary;
         private Boolean required;
         private Boolean unique;
-
-        public int computeFlag() {
-            return ColumnDefEntity.computeFlag(primary, required, unique);
-        }
     }
 
     public int countColumnSize() {

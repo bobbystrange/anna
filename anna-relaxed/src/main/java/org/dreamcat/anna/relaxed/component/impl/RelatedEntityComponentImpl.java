@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.dreamcat.anna.relaxed.component.RelatedEntityComponent;
 import org.dreamcat.anna.relaxed.core.RelatedObject;
 import org.dreamcat.common.util.ObjectUtil;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -27,9 +26,8 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RequiredArgsConstructor
-@ConditionalOnMissingBean
 @Component
-public class SimpleRelatedEntityComponent implements RelatedEntityComponent {
+public class RelatedEntityComponentImpl implements RelatedEntityComponent {
     /**
      * (tableName, entityClass)
      */

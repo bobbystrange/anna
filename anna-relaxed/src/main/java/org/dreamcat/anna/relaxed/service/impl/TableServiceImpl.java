@@ -97,12 +97,9 @@ public class TableServiceImpl implements TableService {
         result.setDisplayName(table.getDisplayName());
 
         var columns = columnDefDao.findAllByTenantIdAndTableId(tenantId, tableId);
-        result.setColumns(columns.stream().map(it -> {
-            var columnResult = BeanCopierUtil.copy(it, DescTableResult.ColumnResult.class);
-            columnResult.setPrimary(it.isPrimary());
-            columnResult.setRequired(it.isRequired());
-            return columnResult;
-        }).collect(Collectors.toList()));
+        result.setColumns(columns.stream()
+                .map(it -> BeanCopierUtil.copy(it, DescTableResult.ColumnResult.class))
+                .collect(Collectors.toList()));
         return RestBody.ok(result);
     }
 
@@ -147,7 +144,6 @@ public class TableServiceImpl implements TableService {
                         var column = BeanCopierUtil.copy(queryColumn, ColumnDefEntity.class);
                         column.setTenantId(tenantId);
                         column.setTableId(tableId);
-                        column.setFlag(queryColumn.computeFlag());
                         return column;
                     })
                     .collect(Collectors.toList());
@@ -167,7 +163,6 @@ public class TableServiceImpl implements TableService {
                         var column = columnMap.get(updateName);
                         var queryColumn = queryColumnMap.get(updateName);
                         BeanCopierUtil.copy(column, queryColumn);
-                        column.setFlag(queryColumn.computeFlag());
                         return column;
                     })
                     .collect(Collectors.toList());

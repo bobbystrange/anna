@@ -22,33 +22,7 @@ public class ColumnDefEntity extends BaseEntity {
     @Column(name = "display_name")
     private String displayName;
     private ColumnType type;
-    // only works with source filed
-    private String source;
-    // <unique> <required> <primary>
-    private Integer flag;
     private Boolean primary;
     private Boolean required;
-
-    // // the related column on the source table
-    // public boolean isPrimary() {
-    //     return (flag & 1) != 0;
-    // }
-    //
-    // // only works with custom-defined type
-    // public boolean isRequired() {
-    //     return (flag & 1 << 1) != 0;
-    // }
-    //
-    // // only works with custom-defined type
-    // public boolean isUnique() {
-    //     return (flag & 1 << 2) != 0;
-    // }
-    //
-    // public static int computeFlag(Boolean primary, Boolean required, Boolean unique) {
-    //     int flag = 0;
-    //     if (Objects.equals(primary, true)) flag |= 1;
-    //     if (Objects.equals(required, true)) flag |= 1 << 1;
-    //     if (Objects.equals(unique, true)) flag |= 1 << 2;
-    //     return flag;
-    // }
+    private Boolean unique;
 }

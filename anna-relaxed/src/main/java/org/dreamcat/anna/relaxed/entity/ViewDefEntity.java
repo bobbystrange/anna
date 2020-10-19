@@ -23,4 +23,7 @@ public class ViewDefEntity extends BaseEntity {
     private String sourceTable;
     @Column(name = "source_column")
     private String sourceColumn;
+    // such as  A.type = ? and length(A.B.name) > 0
+    @Column(name = "source_condition")
+    private String sourceCondition;
 }

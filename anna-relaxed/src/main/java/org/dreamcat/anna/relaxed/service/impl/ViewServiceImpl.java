@@ -5,7 +5,6 @@ import org.dreamcat.anna.relaxed.config.Auth;
 import org.dreamcat.anna.relaxed.controller.view.query.CreateOrAlterViewQuery;
 import org.dreamcat.anna.relaxed.controller.view.query.QueryViewQuery;
 import org.dreamcat.anna.relaxed.controller.view.result.DescViewResult;
-import org.dreamcat.anna.relaxed.controller.view.result.QueryViewResult;
 import org.dreamcat.anna.relaxed.core.NameValuePair;
 import org.dreamcat.anna.relaxed.dao.ViewDefDao;
 import org.dreamcat.anna.relaxed.dao.ViewFieldDefDao;
@@ -13,9 +12,11 @@ import org.dreamcat.anna.relaxed.entity.ViewDefEntity;
 import org.dreamcat.anna.relaxed.entity.ViewFieldDefEntity;
 import org.dreamcat.anna.relaxed.service.ReachabilityService;
 import org.dreamcat.anna.relaxed.service.ViewService;
+import org.dreamcat.common.function.ObjectArrayFunction;
 import org.dreamcat.common.util.CollectionUtil;
 import org.dreamcat.common.web.core.RestBody;
 import org.dreamcat.common.web.exception.BadRequestException;
+import org.dreamcat.common.web.exception.NotFoundException;
 import org.dreamcat.common.web.util.BeanCopierUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,6 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -180,17 +183,59 @@ public class ViewServiceImpl implements ViewService {
     }
 
     @Override
-    public RestBody<QueryViewResult> queryView(QueryViewQuery query) {
+    public RestBody<List<NameValuePair>> queryView(QueryViewQuery query) {
         var tenantId = Auth.getTenantId();
         var name = query.getView();
-        var primaryValue = query.getValue();
         var queryFieldList = query.getFields();
 
+        var view = findView(name, tenantId);
+        var viewId = view.getId();
+
+        var result = new ArrayList<NameValuePair>();
+        var expressions = extractExpressions(queryFieldList, viewId, tenantId, result);
+        var values = reachabilityService.parse(expressions, view.getSourceTable(), view.getSourceColumn(), query.getValue(), query.getConditionArgs());
+        for (int i = 0, len = result.size(); i < len; i++) {
+            result.get(i).setValue(CollectionUtil.elementAt(values, i));
+        }
+        return RestBody.ok(result);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public RestBody<Map<String, ?>> queryViewAsExampleMap(QueryViewQuery query) {
+        return queryViewAsMap(query, args -> reachabilityService.parseAsExampleMap(
+                (List<String>) args[0], (String) args[1], (String) args[2], (String) args[3], (List<String>) args[4]));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public RestBody<Map<String, ?>> queryViewAsMap(QueryViewQuery query) {
+        return queryViewAsMap(query, args -> reachabilityService.parseAsMap(
+                (List<String>) args[0], (String) args[1], (String) args[2], (String) args[3], (List<String>) args[4]));
+    }
+
+    private RestBody<Map<String, ?>> queryViewAsMap(QueryViewQuery query, ObjectArrayFunction<Map<String, ?>> parser) {
+        var tenantId = Auth.getTenantId();
+        var name = query.getView();
+        var queryFieldList = query.getFields();
+
+        var view = findView(name, tenantId);
+        var viewId = view.getId();
+
+        var expressions = extractExpressions(queryFieldList, viewId, tenantId, null);
+        var result = parser.apply(expressions, view.getSourceTable(), view.getSourceColumn(), query.getValue(), query.getConditionArgs());
+        return RestBody.ok(result);
+    }
+
+    private ViewDefEntity findView(String name, Long tenantId) {
         var view = viewDefDao.findByTenantIdAndName(tenantId, name);
         if (view == null) {
-            return RestBody.error(String.format("view '%s' doesn't exist", name));
+            throw new NotFoundException(String.format("view '%s' doesn't exist", name));
         }
-        var viewId = view.getId();
+        return view;
+    }
+
+    private List<String> extractExpressions(List<String> queryFieldList, Long viewId, Long tenantId, ArrayList<NameValuePair> list) {
         var fields = viewFieldDefDao.findAllByTenantIdAndViewId(tenantId, viewId);
         Set<String> queryFields = Collections.emptySet();
         if (queryFieldList != null) {
@@ -202,21 +247,14 @@ public class ViewServiceImpl implements ViewService {
 
         var queryFieldNotEmpty = !queryFields.isEmpty();
         var size = queryFieldNotEmpty ? queryFields.size() : fields.size();
-        var list = new ArrayList<NameValuePair>(size);
         var expressions = new ArrayList<String>(size);
+        if (list != null) list.ensureCapacity(size);
         for (var field : fields) {
             var fieldName = field.getName();
             if (queryFieldNotEmpty && queryFields.contains(fieldName)) continue;
-            list.add(new NameValuePair(fieldName));
+            if (list != null) list.add(new NameValuePair(fieldName));
             expressions.add(field.getExpression());
         }
-
-        var values = reachabilityService.parse(expressions, view.getSourceTable(), view.getSourceColumn(), primaryValue);
-        for (int i = 0, len = list.size(); i < len; i++) {
-            list.get(i).setValue(CollectionUtil.elementAt(values, i));
-        }
-        var result = new QueryViewResult();
-        result.setFields(list);
-        return RestBody.ok(result);
+        return expressions;
     }
 }

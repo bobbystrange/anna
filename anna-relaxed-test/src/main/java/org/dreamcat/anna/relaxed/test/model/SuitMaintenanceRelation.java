@@ -10,7 +10,7 @@ import java.util.List;
  * Create by tuke on 2020/9/18
  */
 @Data
-@RelatedTable(tableName = "suit_maintenance_relation", index = {"suit_id", "maintenance_seq"})
+@RelatedTable(tableName = "suit_maintenance_relation", index = {"id", "suit_id", "maintenance_seq"})
 public class SuitMaintenanceRelation {
     @RelatedColumn(name = "Suit", column = "suit_id", relatedColumn = "id")
     private List<Suit> suits;

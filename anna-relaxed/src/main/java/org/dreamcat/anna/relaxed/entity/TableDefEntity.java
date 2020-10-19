@@ -18,9 +18,4 @@ public class TableDefEntity extends BaseEntity {
     private String name;
     @Column(name = "display_name")
     private String displayName;
-    // a physical database table
-    @Column(name = "source_table")
-    private String sourceTable;
-    @Column(name = "source_column")
-    private String sourceColumn;
 }

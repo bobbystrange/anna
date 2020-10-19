@@ -33,8 +33,6 @@ Canteen  Agency     Suits                         Desk         Door
                         Maintenance
 
 create view Information from Student at number(
-    staff,
-    comment,
     name = $name,
     meal_card_number = $MealCard.number,
     canteen_location = $MealCard.Canteen.location,
@@ -48,7 +46,10 @@ create view Information from Student at number(
     chair_supplier_name = $Room.Desk.Chair.Supplier.name,
     door_size = $Room.Door.size,
     door_supplier_name = $Room.Door.Supplier.name,
-);
+) where ($MealCard.number in ?
+    and $MealCard.Agency.manager = ?
+    and $Person.age between ? and ?
+    and $Person.Suits.number <> ?) or length($Room.Door.code) > ?;
 */
 select *
 from `view_def`;
