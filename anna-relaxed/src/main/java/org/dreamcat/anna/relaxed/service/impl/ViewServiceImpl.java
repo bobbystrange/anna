@@ -6,6 +6,7 @@ import org.dreamcat.anna.relaxed.controller.view.query.CreateOrAlterViewQuery;
 import org.dreamcat.anna.relaxed.controller.view.query.QueryViewQuery;
 import org.dreamcat.anna.relaxed.controller.view.result.DescViewResult;
 import org.dreamcat.anna.relaxed.core.NameValuePair;
+import org.dreamcat.anna.relaxed.core.condition.ConditionArgContext;
 import org.dreamcat.anna.relaxed.dao.ViewDefDao;
 import org.dreamcat.anna.relaxed.dao.ViewFieldDefDao;
 import org.dreamcat.anna.relaxed.entity.ViewDefEntity;
@@ -193,7 +194,9 @@ public class ViewServiceImpl implements ViewService {
 
         var result = new ArrayList<NameValuePair>();
         var expressions = extractExpressions(queryFieldList, viewId, tenantId, result);
-        var values = reachabilityService.parse(expressions, view.getSourceTable(), view.getSourceColumn(), query.getValue(), query.getConditionArgs());
+        var context = new ConditionArgContext();
+        context.setConditionArgs(query.getConditionArgs());
+        var values = reachabilityService.parse(expressions, view.getSourceTable(), view.getSourceColumn(), query.getValue(), context);
         for (int i = 0, len = result.size(); i < len; i++) {
             result.get(i).setValue(CollectionUtil.elementAt(values, i));
         }
@@ -204,14 +207,14 @@ public class ViewServiceImpl implements ViewService {
     @Override
     public RestBody<Map<String, ?>> queryViewAsExampleMap(QueryViewQuery query) {
         return queryViewAsMap(query, args -> reachabilityService.parseAsExampleMap(
-                (List<String>) args[0], (String) args[1], (String) args[2], (String) args[3], (List<String>) args[4]));
+                (List<String>) args[0], (String) args[1], (String) args[2], (String) args[3], (ConditionArgContext) args[4]));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public RestBody<Map<String, ?>> queryViewAsMap(QueryViewQuery query) {
         return queryViewAsMap(query, args -> reachabilityService.parseAsMap(
-                (List<String>) args[0], (String) args[1], (String) args[2], (String) args[3], (List<String>) args[4]));
+                (List<String>) args[0], (String) args[1], (String) args[2], (String) args[3], (ConditionArgContext) args[4]));
     }
 
     private RestBody<Map<String, ?>> queryViewAsMap(QueryViewQuery query, ObjectArrayFunction<Map<String, ?>> parser) {
@@ -223,7 +226,9 @@ public class ViewServiceImpl implements ViewService {
         var viewId = view.getId();
 
         var expressions = extractExpressions(queryFieldList, viewId, tenantId, null);
-        var result = parser.apply(expressions, view.getSourceTable(), view.getSourceColumn(), query.getValue(), query.getConditionArgs());
+        var context = new ConditionArgContext();
+        context.setConditionArgs(query.getConditionArgs());
+        var result = parser.apply(expressions, view.getSourceTable(), view.getSourceColumn(), query.getValue(), context);
         return RestBody.ok(result);
     }
 

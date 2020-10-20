@@ -2,6 +2,7 @@ package org.dreamcat.anna.relaxed.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.dreamcat.anna.relaxed.component.RelatedEntityComponent;
+import org.dreamcat.anna.relaxed.core.condition.ConditionArgContext;
 import org.dreamcat.anna.relaxed.service.ReachabilityService;
 import org.dreamcat.common.util.ObjectUtil;
 import org.springframework.stereotype.Service;
@@ -57,7 +58,7 @@ public class ReachabilityServiceImpl implements ReachabilityService {
     }
 
     @Override
-    public List<?> parse(List<String> expressions, String tableName, String columnName, String columnValue, List<String> conditionArgs) {
+    public List<?> parse(List<String> expressions, String tableName, String columnName, String columnValue, ConditionArgContext context) {
         var relatedObject = relatedEntityService.findByTableName(tableName);
         if (relatedObject == null || ObjectUtil.isEmpty(relatedObject.getChildren())) {
             // a all-null-element list has same size with expressions
@@ -131,13 +132,13 @@ public class ReachabilityServiceImpl implements ReachabilityService {
     }
 
     @Override
-    public Map<String, ?> parseAsMap(List<String> expressions, String tableName, String columnName, String columnValue, List<String> conditionArgs) {
+    public Map<String, ?> parseAsMap(List<String> expressions, String tableName, String columnName, String columnValue, ConditionArgContext conditionArgs) {
         return null;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public Map<String, ?> parseAsExampleMap(List<String> expressions, String tableName, String columnName, String columnValue, List<String> conditionArgs) {
+    public Map<String, ?> parseAsExampleMap(List<String> expressions, String tableName, String columnName, String columnValue, ConditionArgContext context) {
         var relatedObject = relatedEntityService.findByTableName(tableName);
         if (relatedObject == null || ObjectUtil.isEmpty(relatedObject.getChildren())) {
             return Collections.emptyMap();
@@ -224,8 +225,8 @@ public class ReachabilityServiceImpl implements ReachabilityService {
         }
 
         return cache.values().stream()
-                .filter(columnValues::contains)
                 .flatMap(Collection::stream)
+                .filter(it -> columnValues.contains(it.get(columnName)))
                 .collect(Collectors.toList());
     }
 

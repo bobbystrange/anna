@@ -1,5 +1,7 @@
 package org.dreamcat.anna.relaxed.service;
 
+import org.dreamcat.anna.relaxed.core.condition.ConditionArgContext;
+
 import java.util.List;
 import java.util.Map;
 
@@ -25,12 +27,12 @@ public interface ReachabilityService {
      * @param columnValue the value of the related column
      * @return values which will be evaluated dynamically
      */
-    List<?> parse(List<String> expressions, String tableName, String columnName, String columnValue, List<String> conditionArgs);
+    List<?> parse(List<String> expressions, String tableName, String columnName, String columnValue, ConditionArgContext context);
 
     /**
      * return as Map
      */
-    Map<String, ?> parseAsMap(List<String> expressions, String tableName, String columnName, String columnValue, List<String> conditionArgs);
+    Map<String, ?> parseAsMap(List<String> expressions, String tableName, String columnName, String columnValue, ConditionArgContext context);
 
-    Map<String, ?> parseAsExampleMap(List<String> expressions, String tableName, String columnName, String columnValue, List<String> conditionArgs);
+    Map<String, ?> parseAsExampleMap(List<String> expressions, String tableName, String columnName, String columnValue, ConditionArgContext context);
 }
