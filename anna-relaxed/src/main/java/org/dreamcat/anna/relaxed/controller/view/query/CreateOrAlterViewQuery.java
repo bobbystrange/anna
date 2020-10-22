@@ -17,6 +17,13 @@ public class CreateOrAlterViewQuery {
     @NotEmpty
     private String displayName;
     @NotEmpty
+    @Pattern(regexp = "[A-Za-z][A-Za-z_]+?")
+    private String sourceTable;
+    @NotEmpty
+    @Pattern(regexp = "[A-Za-z][A-Za-z_]+?")
+    private String sourceColumn;
+    private String sourceCondition;
+    @NotEmpty
     private List<FieldParam> fields;
 
     @Data

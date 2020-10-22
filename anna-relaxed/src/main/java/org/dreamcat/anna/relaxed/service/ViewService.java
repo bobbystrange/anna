@@ -24,7 +24,5 @@ public interface ViewService {
 
     RestBody<List<NameValuePair>> queryView(QueryViewQuery query);
 
-    RestBody<Map<String, ?>> queryViewAsExampleMap(QueryViewQuery query);
-
     RestBody<Map<String, ?>> queryViewAsMap(QueryViewQuery query);
 }

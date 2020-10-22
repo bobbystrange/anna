@@ -3,147 +3,26 @@ from view_field_def
 where view_id = 2
 order by id;
 /*
-+------+----------------------+---------------------------------------------------------------+
-| id   | name                 | expression                                                        |
-+------+----------------------+---------------------------------------------------------------+
-| 2001 | staff                | NULL                                                          |
-| 2002 | comment              | NULL                                                          |
-| 2003 | name                 | name                                                          |
-| 2004 | meal_card_number     | MealCard.number                                               |
-| 2005 | canteen_location     | MealCard.Canteen.location                                     |
-| 2006 | agency_manager       | MealCard.Agency.manager                                       |
-| 2007 | person_age           | Person.age                                                    |
-| 2008 | suits_number         | Person.Suits.number                                           |
-| 2009 | suit_color           | Person.Suits.Suit.color                                       |
-| 2010 | maker_name           | Person.Suits.Suit.Maker.name                                  |
-| 2011 | suit_maintenance_seq | Person.Suits.Suit.SuitMaintenanceRelation.Maintenance.seq     |
-| 2012 | maintenance_standard | Room.Desk.Chair.ChairMaintenanceRelation.Maintenance.standard |
-| 2013 | chair_supplier_name  | Room.Desk.Chair.Supplier.name                                 |
-| 2014 | door_size            | Room.Door.size                                                |
-| 2015 | door_supplier_name   | Room.Door.Supplier.name                                       |
-+------+----------------------+---------------------------------------------------------------+
-
-# Request:
-curl -v -H 'Content-Type: application/json' http://localhost:8080/api/v1/view/query -d '
-{
-  "view": "information",
-  "value": "student_number_1"
-}'
-
-curl -v -H 'Content-Type: application/json' http://localhost:8080/api/v1/table/insert -d '
-{
-    "name": "information",
-    "columns": [
-        {
-            "name": "number",
-            "value": "student_number_1"
-        },
-        {
-            "name": "staff",
-            "value": "bobby"
-        }
-    ]
-}'
-
-# Response:
-{
-    "code": 0,
-    "data": {
-        "columns": [
-            {
-                "name": "agency_manager",
-                "value": [
-                    "agency_1_1",
-                    "agency_1_2",
-                    "agency_1_3",
-                    "agency_2_1",
-                    "agency_2_2",
-                    "agency_3"
-                ]
-            },
-            {
-                "name": "canteen_location",
-                "value": [
-                    "east",
-                    "west"
-                ]
-            },
-            {
-                "name": "maintenance_standard",
-                "value": [
-                    "maintenance_standard_1",
-                    "maintenance_standard_2",
-                    "maintenance_standard_4",
-                    "maintenance_standard_5",
-                    "maintenance_standard_6",
-                    "maintenance_standard_7"
-                ]
-            },
-            {
-                "name": "door_supplier_name",
-                "value": "supplier_name_1"
-            },
-            {
-                "name": "suits_number",
-                "value": "suits-4"
-            },
-            {
-                "name": "suit_color",
-                "value": "white"
-            },
-            {
-                "name": "staff",
-                "value": null
-            },
-            {
-                "name": "person_age",
-                "value": 80
-            },
-            {
-                "name": "suit_maintenance_seq",
-                "value": [
-                    "maintenance_seq_1",
-                    "maintenance_seq_1",
-                    "maintenance_seq_2",
-                    "maintenance_seq_2",
-                    "maintenance_seq_3",
-                    "maintenance_seq_4"
-                ]
-            },
-            {
-                "name": "door_size",
-                "value": "12x20"
-            },
-            {
-                "name": "name",
-                "value": "student_name_1"
-            },
-            {
-                "name": "meal_card_number",
-                "value": [
-                    "meal_card_number_2",
-                    "meal_card_number_3",
-                    "meal_card_number_5"
-                ]
-            },
-            {
-                "name": "chair_supplier_name",
-                "value": "supplier_name_1"
-            },
-            {
-                "name": "comment",
-                "value": null
-            },
-            {
-                "name": "maker_name",
-                "value": "maker_name_2"
-            }
-        ]
-    },
-    "success": true
-}
++----+----------------------------+----------------------------------------------------------------+
+| id | name                       | expression                                                     |
++----+----------------------------+----------------------------------------------------------------+
+|  1 | name                       | name                                                           |
+|  2 | number                     | number                                                         |
+|  3 | meal_card_number           | MealCard.number                                                |
+|  4 | canteen_location           | MealCard.Canteen.location                                      |
+|  5 | agency_manager             | MealCard.Agency.manager                                        |
+|  6 | person_age                 | Person.age                                                     |
+|  7 | suits_number               | Person.Suits.number                                            |
+|  8 | suit_color                 | Person.Suits.Suit.color                                        |
+|  9 | maker_name                 | Person.Suits.Suit.Maker.name                                   |
+| 10 | suit_maintenance_seq       | Person.Suits.Suit.SuitMaintenanceRelation.Maintenance.seq      |
+| 11 | suit_maintenance_standard  | Person.Suits.Suit.SuitMaintenanceRelation.Maintenance.standard |
+| 12 | chair_maintenance_standard | Room.Desk.Chair.ChairMaintenanceRelation.Maintenance.standard  |
+| 13 | chair_supplier_name        | Room.Desk.Chair.Supplier.name                                  |
+| 14 | door_size                  | Room.Door.size                                                 |
+| 15 | door_supplier_name         | Room.Door.Supplier.name                                        |
++----+----------------------------+----------------------------------------------------------------+
 */
-
 
 -- name
 select distinct name

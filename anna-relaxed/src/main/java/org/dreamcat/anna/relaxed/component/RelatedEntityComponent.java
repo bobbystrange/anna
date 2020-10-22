@@ -14,5 +14,5 @@ public interface RelatedEntityComponent {
 
     RelatedObject findByTableName(String tableName);
 
-    List<Map<String, Object>> fetchEntities(String tableName, String columnName, Collection<Object> keys);
+    List<Map<String, Object>> fetchEntities(String tableName, String columnName, Collection<Object> columnValues);
 }

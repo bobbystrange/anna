@@ -45,12 +45,12 @@ public class RelatedEntityComponentImpl implements RelatedEntityComponent {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Map<String, Object>> fetchEntities(String tableName, String columnName, Collection<Object> keys) {
+    public List<Map<String, Object>> fetchEntities(String tableName, String columnName, Collection<Object> columnValues) {
         var repositories = entityRepositories.get(tableName);
         if (repositories == null) return Collections.emptyList();
         var repository = repositories.get(columnName);
         if (repository == null) return Collections.emptyList();
-        return repository.apply(keys);
+        return repository.apply(columnValues);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package org.dreamcat.anna.relaxed.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.dreamcat.anna.relaxed.component.ExpressionComponent;
+import org.dreamcat.anna.relaxed.component.ReachabilityComponent;
 import org.dreamcat.anna.relaxed.config.Auth;
 import org.dreamcat.anna.relaxed.controller.view.query.CreateOrAlterViewQuery;
 import org.dreamcat.anna.relaxed.controller.view.query.QueryViewQuery;
@@ -11,7 +13,6 @@ import org.dreamcat.anna.relaxed.dao.ViewDefDao;
 import org.dreamcat.anna.relaxed.dao.ViewFieldDefDao;
 import org.dreamcat.anna.relaxed.entity.ViewDefEntity;
 import org.dreamcat.anna.relaxed.entity.ViewFieldDefEntity;
-import org.dreamcat.anna.relaxed.service.ReachabilityService;
 import org.dreamcat.anna.relaxed.service.ViewService;
 import org.dreamcat.common.function.ObjectArrayFunction;
 import org.dreamcat.common.util.CollectionUtil;
@@ -42,7 +43,8 @@ public class ViewServiceImpl implements ViewService {
     private final ViewDefDao viewDefDao;
     private final ViewFieldDefDao viewFieldDefDao;
     /// Service
-    private final ReachabilityService reachabilityService;
+    private final ReachabilityComponent reachabilityComponent;
+    private final ExpressionComponent expressionComponent;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
@@ -53,10 +55,24 @@ public class ViewServiceImpl implements ViewService {
         if (view != null) {
             return RestBody.error(String.format("duplicate view name '%s'", name));
         }
+
+        var queryFields = query.getFields();
+        var expressions = queryFields.stream().map(CreateOrAlterViewQuery.FieldParam::getExpression)
+                .collect(Collectors.toSet());
+        var sourceTable = query.getSourceTable();
+        var sourceColumn = query.getSourceColumn();
+        var sourceCondition = query.getSourceCondition();
+        if (!reachabilityComponent.test(expressions, sourceTable, sourceColumn, sourceCondition)) {
+            return RestBody.error("unreachable expressions");
+        }
+
         view = new ViewDefEntity();
         view.setTenantId(tenantId);
         view.setName(query.getName());
         view.setDisplayName(query.getDisplayName());
+        view.setSourceTable(sourceTable);
+        view.setSourceColumn(sourceColumn);
+        view.setSourceCondition(sourceCondition);
         try {
             view = viewDefDao.save(view);
         } catch (Exception e) {
@@ -65,11 +81,11 @@ public class ViewServiceImpl implements ViewService {
         }
         var viewId = view.getId();
 
-        var queryFields = query.getFields();
         var queryFieldSize = queryFields.size();
         if (query.countFieldSize() < queryFieldSize) {
             throw new BadRequestException("duplicate name in fields");
         }
+
         var columns = queryFields.stream()
                 .map(queryField -> {
                     var column = BeanCopierUtil.copy(queryField, ViewFieldDefEntity.class);
@@ -196,7 +212,7 @@ public class ViewServiceImpl implements ViewService {
         var expressions = extractExpressions(queryFieldList, viewId, tenantId, result);
         var context = new ConditionArgContext();
         context.setConditionArgs(query.getConditionArgs());
-        var values = reachabilityService.parse(expressions, view.getSourceTable(), view.getSourceColumn(), query.getValue(), context);
+        var values = expressionComponent.parse(expressions, view.getSourceTable(), view.getSourceColumn(), query.getValue(), context);
         for (int i = 0, len = result.size(); i < len; i++) {
             result.get(i).setValue(CollectionUtil.elementAt(values, i));
         }
@@ -205,15 +221,8 @@ public class ViewServiceImpl implements ViewService {
 
     @SuppressWarnings("unchecked")
     @Override
-    public RestBody<Map<String, ?>> queryViewAsExampleMap(QueryViewQuery query) {
-        return queryViewAsMap(query, args -> reachabilityService.parseAsExampleMap(
-                (List<String>) args[0], (String) args[1], (String) args[2], (String) args[3], (ConditionArgContext) args[4]));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
     public RestBody<Map<String, ?>> queryViewAsMap(QueryViewQuery query) {
-        return queryViewAsMap(query, args -> reachabilityService.parseAsMap(
+        return queryViewAsMap(query, args -> expressionComponent.parseAsMap(
                 (List<String>) args[0], (String) args[1], (String) args[2], (String) args[3], (ConditionArgContext) args[4]));
     }
 

@@ -52,11 +52,6 @@ public class ViewController {
         return service.queryView(query);
     }
 
-    @RequestMapping(path = "/query/map/example", method = RequestMethod.POST)
-    public RestBody<Map<String, ?>> queryViewAsExampleMap(@Valid @RequestBody QueryViewQuery query) {
-        return service.queryViewAsExampleMap(query);
-    }
-
     @RequestMapping(path = "/query/map", method = RequestMethod.POST)
     public RestBody<Map<String, ?>> queryViewAsMap(@Valid @RequestBody QueryViewQuery query) {
         return service.queryViewAsMap(query);

@@ -60,34 +60,39 @@ where view_id = 2;
 -- information
 insert into `view_def`(id, tenant_id, name, display_name, source_table, source_column)
 values (2, 0, 'information', 'Information of Student', 'student', 'number');
-insert into `view_field_def`(id, tenant_id, view_id, name, display_name, expression)
-values (2001, 0, 2, 'name', 'column name', 'name');
-insert into `view_field_def`(id, tenant_id, view_id, name, display_name, expression)
-values (2002, 0, 2, 'meal_card_number', 'column meal card number', 'MealCard.number');
-insert into `view_field_def`(id, tenant_id, view_id, name, display_name, expression)
-values (2003, 0, 2, 'canteen_location', 'column canteen location', 'MealCard.Canteen.location');
-insert into `view_field_def`(id, tenant_id, view_id, name, display_name, expression)
-values (2004, 0, 2, 'agency_manager', 'column agency manager', 'MealCard.Agency.manager');
-insert into `view_field_def`(id, tenant_id, view_id, name, display_name, expression)
-values (2005, 0, 2, 'person_age', 'column person age', 'Person.age');
-insert into `view_field_def`(id, tenant_id, view_id, name, display_name, expression)
-values (2006, 0, 2, 'suits_number', 'column suits number', 'Person.Suits.number');
-insert into `view_field_def`(id, tenant_id, view_id, name, display_name, expression)
-values (2007, 0, 2, 'suit_color', 'column suit color', 'Person.Suits.Suit.color');
-insert into `view_field_def`(id, tenant_id, view_id, name, display_name, expression)
-values (2008, 0, 2, 'maker_name', 'column maker name', 'Person.Suits.Suit.Maker.name');
-insert into `view_field_def`(id, tenant_id, view_id, name, display_name, expression)
-values (2009, 0, 2, 'suit_maintenance_seq', 'column suit maintenance seq',
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'name', 'column name', 'name');
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'number', 'column number', 'number');
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'meal_card_number', 'column meal card number', 'MealCard.number');
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'canteen_location', 'column canteen location', 'MealCard.Canteen.location');
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'agency_manager', 'column agency manager', 'MealCard.Agency.manager');
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'person_age', 'column person age', 'Person.age');
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'suits_number', 'column suits number', 'Person.Suits.number');
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'suit_color', 'column suit color', 'Person.Suits.Suit.color');
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'maker_name', 'column maker name', 'Person.Suits.Suit.Maker.name');
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'suit_maintenance_seq', 'column suit maintenance seq',
         'Person.Suits.Suit.SuitMaintenanceRelation.Maintenance.seq');
-insert into `view_field_def`(id, tenant_id, view_id, name, display_name, expression)
-values (2010, 0, 2, 'chair_maintenance_standard', 'column maintenance standard',
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'suit_maintenance_standard', 'column suit maintenance standard',
+        'Person.Suits.Suit.SuitMaintenanceRelation.Maintenance.standard');
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'chair_maintenance_standard', 'column maintenance standard',
         'Room.Desk.Chair.ChairMaintenanceRelation.Maintenance.standard');
-insert into `view_field_def`(id, tenant_id, view_id, name, display_name, expression)
-values (2011, 0, 2, 'chair_supplier_name', 'column chair supplier name', 'Room.Desk.Chair.Supplier.name');
-insert into `view_field_def`(id, tenant_id, view_id, name, display_name, expression)
-values (2012, 0, 2, 'door_size', 'column door size', 'Room.Door.size');
-insert into `view_field_def`(id, tenant_id, view_id, name, display_name, expression)
-values (2013, 0, 2, 'door_supplier_name', 'column door supplier name', 'Room.Door.Supplier.name');
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'chair_supplier_name', 'column chair supplier name', 'Room.Desk.Chair.Supplier.name');
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'door_size', 'column door size', 'Room.Door.size');
+insert into `view_field_def`(tenant_id, view_id, name, display_name, expression)
+values (0, 2, 'door_supplier_name', 'column door supplier name', 'Room.Door.Supplier.name');
 
 -- other tables
 select *
