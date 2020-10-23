@@ -1,6 +1,5 @@
 package org.dreamcat.anna.relaxed.component;
 
-
 import org.dreamcat.anna.relaxed.core.RelatedObject;
 
 import java.util.Collection;
@@ -12,7 +11,7 @@ import java.util.Map;
  */
 public interface RelatedEntityComponent {
 
-    RelatedObject findByTableName(String tableName);
+    RelatedObject findByEntityName(String entityName);
 
-    List<Map<String, Object>> fetchEntities(String tableName, String columnName, Collection<Object> columnValues);
+    List<Map<String, Object>> fetchEntities(String entityName, String columnName, Collection<Object> columnValues);
 }

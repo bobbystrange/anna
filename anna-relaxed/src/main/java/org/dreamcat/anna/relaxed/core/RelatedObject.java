@@ -70,14 +70,14 @@ public class RelatedObject {
         var nameColumnStrategy = relatedTable.nameColumnStrategy();
         var nameStyle = relatedTable.nameStyle();
         var columnStyle = relatedTable.columnStyle();
-        var indexeArray = relatedTable.index();
+        var indexArray = relatedTable.index();
 
         RelatedObject relatedObject = new RelatedObject();
         node.relatedObject = relatedObject;
         node.entityClass = entityClass;
 
         relatedObject.setEntityName(tableName);
-        var indexes = new HashSet<>(Arrays.asList(indexeArray));
+        var indexes = new HashSet<>(Arrays.asList(indexArray));
         relatedObject.setIndexes(indexes);
 
         var fields = ReflectUtil.retrieveNoStaticFields(entityClass);
@@ -184,5 +184,4 @@ public class RelatedObject {
             return relatedObject;
         }
     }
-
 }

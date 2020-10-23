@@ -31,10 +31,10 @@ public class ExpressionComponentImpl implements ExpressionComponent {
 
     @Override
     public List<?> parse(
-            List<String> expressions, String tableName, String columnName,
+            List<String> expressions, String entityName, String columnName,
             String columnValue, ConditionArgContext context,
             Map<String, Map<String, Map<Object, List<Map<String, Object>>>>> entityCache) {
-        var relatedObject = relatedEntityComponent.findByTableName(tableName);
+        var relatedObject = relatedEntityComponent.findByEntityName(entityName);
         if (relatedObject == null || ObjectUtil.isEmpty(relatedObject.getChildren())) {
             // a all-null-element list has same size with expressions
             return Arrays.asList(new Void[expressions.size()]);
@@ -114,9 +114,9 @@ public class ExpressionComponentImpl implements ExpressionComponent {
 
     @Override
     public Map<String, ?> parseAsMap(
-            List<String> expressions, String tableName, String columnName,
+            List<String> expressions, String entityName, String columnName,
             String columnValue, ConditionArgContext context) {
-        var relatedObject = relatedEntityComponent.findByTableName(tableName);
+        var relatedObject = relatedEntityComponent.findByEntityName(entityName);
         if (relatedObject == null || ObjectUtil.isEmpty(relatedObject.getChildren())) {
             // a all-null-element list has same size with expressions
             return new HashMap<>();
@@ -139,9 +139,7 @@ public class ExpressionComponentImpl implements ExpressionComponent {
         Set<Object> columnValues = Collections.singleton(columnValue);
         var entities = fetchEntities(entityCache, entityName, entityColumnName, columnValues);
         Map<String, Object> map = new HashMap<>();
-        if (entities.size() != 1) {
-            return map;
-        }
+        if (entities.size() != 1) return map;
         var entity = entities.get(0);
         for (var expression : expressions) {
             var fields = expression.split("\\.");
@@ -158,7 +156,7 @@ public class ExpressionComponentImpl implements ExpressionComponent {
             String[] fields, int offset, int size,
             // String entityName, String entityColumnName, Set<Object> columnValues,
             RelatedObject relatedObject, Map<String, Object> entity,
-            HashMap<String, Map<String, Map<Object, List<Map<String, Object>>>>> entityCache) {
+            Map<String, Map<String, Map<Object, List<Map<String, Object>>>>> entityCache) {
         var field = fields[offset];
         var child = relatedObject.getChildren().get(field);
         // no relationship
@@ -197,7 +195,7 @@ public class ExpressionComponentImpl implements ExpressionComponent {
                     var e = entities.get(i);
                     Map<String, Object> nextMap;
                     if (listSize == 0) {
-                        nextMap = new HashMap<String, Object>();
+                        nextMap = new HashMap<>();
                         list.add(nextMap);
                     } else if (listSize > i) {
                         nextMap = list.get(i);
@@ -212,27 +210,27 @@ public class ExpressionComponentImpl implements ExpressionComponent {
     }
 
     private List<Map<String, Object>> fetchEntities(
-            Map<String, Map<String, Map<Object, List<Map<String, Object>>>>> entityCache, String entityName,
-            String columnName, Set<Object> columnValues) {
+            Map<String, Map<String, Map<Object, List<Map<String, Object>>>>> entityCache,
+            String entityName, String columnName, Set<Object> columnValues) {
         var cache = entityCache.computeIfAbsent(entityName, entityNameKey -> new HashMap<>())
                 .computeIfAbsent(columnName, columnNameKey -> new HashMap<>());
 
         var differentSet = new HashSet<>(columnValues);
         differentSet.removeAll(cache.keySet());
         if (!differentSet.isEmpty()) {
-            log.info("fetch entities: entityName={}, columnName={}, columnValues={}", entityName, columnName, columnValues);
+            if (log.isDebugEnabled()) {
+                log.debug("fetching entities: entityName={}, columnName={}, columnValues={}", entityName, columnName, columnValues);
+            }
             var entities = relatedEntityComponent.fetchEntities(entityName, columnName, differentSet);
             var entityMap = entities.stream()
                     .collect(Collectors.groupingBy(entity -> entity.get(columnName)));
             cache.putAll(entityMap);
             // no filtering
-            return entityMap.values().stream()
-                    .flatMap(Collection::stream)
+            return entityMap.values().stream().flatMap(Collection::stream)
                     .collect(Collectors.toList());
         }
 
-        return cache.values().stream()
-                .flatMap(Collection::stream)
+        return cache.values().stream().flatMap(Collection::stream)
                 .filter(it -> columnValues.contains(it.get(columnName)))
                 .collect(Collectors.toList());
     }

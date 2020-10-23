@@ -30,17 +30,8 @@ public @interface RelatedTable {
 
     enum Style {
         NONE,
-        /**
-         * howDoYouFeel
-         */
         CAMEL,
-        /**
-         * WhereWillWeGoNow
-         */
         CAMEL_CASE_CAPITALIZED,
-        /**
-         * who_am_i
-         */
         SNAKE;
 
         public String format(String s) {

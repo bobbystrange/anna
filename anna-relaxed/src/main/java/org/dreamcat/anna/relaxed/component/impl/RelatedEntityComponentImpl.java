@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Component
 public class RelatedEntityComponentImpl implements RelatedEntityComponent {
     /**
-     * (tableName, entityClass)
+     * (entityName, entityClass)
      */
     private Map<String, Class<?>> relatedObjectClasses;
     /**
@@ -37,7 +37,7 @@ public class RelatedEntityComponentImpl implements RelatedEntityComponent {
      */
     private Map<Class<?>, RelatedObject> relatedObjects;
     /**
-     * (tableName, columnName, Repository)
+     * (entityName, columnName, Repository)
      */
     private Map<String, Map<String, Function<Collection<Object>, List<Map<String, Object>>>>> entityRepositories;
 
@@ -45,8 +45,8 @@ public class RelatedEntityComponentImpl implements RelatedEntityComponent {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Map<String, Object>> fetchEntities(String tableName, String columnName, Collection<Object> columnValues) {
-        var repositories = entityRepositories.get(tableName);
+    public List<Map<String, Object>> fetchEntities(String entityName, String columnName, Collection<Object> columnValues) {
+        var repositories = entityRepositories.get(entityName);
         if (repositories == null) return Collections.emptyList();
         var repository = repositories.get(columnName);
         if (repository == null) return Collections.emptyList();
@@ -54,7 +54,7 @@ public class RelatedEntityComponentImpl implements RelatedEntityComponent {
     }
 
     @Override
-    public RelatedObject findByTableName(String tableName) {
+    public RelatedObject findByEntityName(String tableName) {
         var entityClass = relatedObjectClasses.get(tableName);
         if (entityClass == null) return null;
         return relatedObjects.get(entityClass);

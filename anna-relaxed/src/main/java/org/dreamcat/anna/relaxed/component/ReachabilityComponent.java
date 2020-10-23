@@ -13,5 +13,5 @@ public interface ReachabilityComponent {
      * @param expressions DSL expressions with related objects
      * @return the validity of the expression
      */
-    boolean test(Collection<String> expressions, String tableName, String columnName, String condition);
+    boolean test(Collection<String> expressions, String entityName, String columnName, String condition);
 }
