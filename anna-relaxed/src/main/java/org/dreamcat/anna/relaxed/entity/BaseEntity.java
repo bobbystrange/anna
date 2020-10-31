@@ -1,14 +1,13 @@
 package org.dreamcat.anna.relaxed.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Create by tuke on 2020/9/11
@@ -17,6 +16,7 @@ import java.util.Date;
 @Setter
 @MappedSuperclass
 public class BaseEntity {
+
     // bigint unsigned     not null auto_increment
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

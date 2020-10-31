@@ -1,5 +1,8 @@
 package org.dreamcat.anna.relaxed.controller.view;
 
+import java.util.List;
+import java.util.Map;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.dreamcat.anna.relaxed.config.AppConfig;
 import org.dreamcat.anna.relaxed.controller.view.query.CreateOrAlterViewQuery;
@@ -14,10 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Create by tuke on 2020/10/15
  */
@@ -25,6 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping(path = AppConfig.API_VERSION + "/view")
 public class ViewController {
+
     private final ViewService service;
 
     @RequestMapping(method = RequestMethod.POST)

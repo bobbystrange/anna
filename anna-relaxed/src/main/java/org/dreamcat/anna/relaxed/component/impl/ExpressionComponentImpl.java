@@ -1,14 +1,5 @@
 package org.dreamcat.anna.relaxed.component.impl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.dreamcat.anna.relaxed.component.ExpressionComponent;
-import org.dreamcat.anna.relaxed.component.RelatedEntityComponent;
-import org.dreamcat.anna.relaxed.core.RelatedObject;
-import org.dreamcat.anna.relaxed.core.condition.ConditionArgContext;
-import org.dreamcat.common.util.ObjectUtil;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,6 +10,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.dreamcat.anna.relaxed.component.ExpressionComponent;
+import org.dreamcat.anna.relaxed.component.RelatedEntityComponent;
+import org.dreamcat.anna.relaxed.core.RelatedObject;
+import org.dreamcat.anna.relaxed.core.condition.ConditionArgContext;
+import org.dreamcat.common.util.ObjectUtil;
+import org.springframework.stereotype.Component;
 
 /**
  * Create by tuke on 2020/10/22
@@ -27,6 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Component
 public class ExpressionComponentImpl implements ExpressionComponent {
+
     private final RelatedEntityComponent relatedEntityComponent;
 
     @Override
@@ -73,7 +73,8 @@ public class ExpressionComponentImpl implements ExpressionComponent {
                     }
 
                     var relatedFieldName = child.getColumnName();
-                    var entities = fetchEntities(entityCache, entityName, entityColumnName, columnValues);
+                    var entities = fetchEntities(entityCache, entityName,
+                            entityColumnName, columnValues);
                     if (ObjectUtil.isEmpty(entities)) {
                         list.add(null);
                         continue outer;
@@ -91,7 +92,8 @@ public class ExpressionComponentImpl implements ExpressionComponent {
                         list.add(null);
                         continue outer;
                     }
-                    var entities = fetchEntities(entityCache, entityName, entityColumnName, columnValues);
+                    var entities = fetchEntities(entityCache, entityName,
+                            entityColumnName, columnValues);
                     if (ObjectUtil.isEmpty(entities)) {
                         list.add(null);
                         continue outer;
@@ -139,7 +141,9 @@ public class ExpressionComponentImpl implements ExpressionComponent {
         Set<Object> columnValues = Collections.singleton(columnValue);
         var entities = fetchEntities(entityCache, entityName, entityColumnName, columnValues);
         Map<String, Object> map = new HashMap<>();
-        if (entities.size() != 1) return map;
+        if (entities.size() != 1) {
+            return map;
+        }
         var entity = entities.get(0);
         for (var expression : expressions) {
             var fields = expression.split("\\.");
@@ -160,17 +164,23 @@ public class ExpressionComponentImpl implements ExpressionComponent {
         var field = fields[offset];
         var child = relatedObject.getChildren().get(field);
         // no relationship
-        if (child == null) return;
+        if (child == null) {
+            return;
+        }
 
         var children = child.getChildren();
         if (ObjectUtil.isEmpty(children)) {
-            if (offset < size - 1) return;
+            if (offset < size - 1) {
+                return;
+            }
 
             var relatedFieldName = child.getColumnName();
             var value = entity.get(relatedFieldName);
             map.put(field, value);
         } else {
-            if (offset == size - 1) return;
+            if (offset == size - 1) {
+                return;
+            }
 
             var relatedColumn = child.getRelatedColumnName();
             var value = entity.get(relatedColumn);
@@ -180,16 +190,21 @@ public class ExpressionComponentImpl implements ExpressionComponent {
             var entityName = child.getEntityName();
             var entityColumnName = child.getColumnName();
 
-            var entities = fetchEntities(entityCache, entityName, entityColumnName, Collections.singleton(value));
-            if (ObjectUtil.isEmpty(entities)) return;
+            var entities = fetchEntities(entityCache, entityName,
+                    entityColumnName, Collections.singleton(value));
+            if (ObjectUtil.isEmpty(entities)) {
+                return;
+            }
 
             if (entities.size() == 1) {
-                var nextMap = (Map<String, Object>) map.computeIfAbsent(field, it -> new HashMap<String, Object>());
+                var nextMap = (Map<String, Object>) map.computeIfAbsent(
+                        field, it -> new HashMap<String, Object>());
                 var e = entities.get(0);
                 recurseParseAsMap(nextMap, fields, offset, size,
                         child, e, entityCache);
             } else {
-                var list = (List<Map<String, Object>>) map.computeIfAbsent(field, it -> new ArrayList<Map<String, Object>>());
+                var list = (List<Map<String, Object>>) map.computeIfAbsent(
+                        field, it -> new ArrayList<Map<String, Object>>());
                 var listSize = list.size();
                 for (int i = 0, len = entities.size(); i < len; i++) {
                     var e = entities.get(i);
@@ -219,9 +234,11 @@ public class ExpressionComponentImpl implements ExpressionComponent {
         differentSet.removeAll(cache.keySet());
         if (!differentSet.isEmpty()) {
             if (log.isDebugEnabled()) {
-                log.debug("fetching entities: entityName={}, columnName={}, columnValues={}", entityName, columnName, columnValues);
+                log.debug("fetching entities: entityName={}, columnName={}, columnValues={}",
+                        entityName, columnName, columnValues);
             }
-            var entities = relatedEntityComponent.fetchEntities(entityName, columnName, differentSet);
+            var entities = relatedEntityComponent.fetchEntities(
+                    entityName, columnName, differentSet);
             var entityMap = entities.stream()
                     .collect(Collectors.groupingBy(entity -> entity.get(columnName)));
             cache.putAll(entityMap);

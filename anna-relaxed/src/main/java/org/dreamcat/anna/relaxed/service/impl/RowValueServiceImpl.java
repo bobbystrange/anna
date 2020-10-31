@@ -1,5 +1,12 @@
 package org.dreamcat.anna.relaxed.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.dreamcat.anna.relaxed.core.ColumnType;
 import org.dreamcat.anna.relaxed.core.ValueStrategy;
@@ -12,20 +19,13 @@ import org.dreamcat.common.web.exception.BadRequestException;
 import org.dreamcat.common.web.jackson.JacksonUtil;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * Create by tuke on 2020/9/14
  */
 @RequiredArgsConstructor
 @Service
 public class RowValueServiceImpl implements RowValueService {
+
     private final SelectValueStrategyDao selectValueStrategyDao;
 
     @Override
@@ -75,7 +75,8 @@ public class RowValueServiceImpl implements RowValueService {
             case DATE -> {
                 if (value instanceof String) {
                     try {
-                        return LocalDate.parse((String) value).format(DateTimeFormatter.ISO_LOCAL_DATE);
+                        return LocalDate.parse((String) value).format(
+                                DateTimeFormatter.ISO_LOCAL_DATE);
                     } catch (Exception ignore) {
                     }
                 }
@@ -90,7 +91,8 @@ public class RowValueServiceImpl implements RowValueService {
             case DATETIME -> {
                 if (value instanceof String) {
                     try {
-                        return String.valueOf(TimeUtil.asEpochMilli(LocalDateTime.parse((String) value)));
+                        return String.valueOf(TimeUtil.asEpochMilli(
+                                LocalDateTime.parse((String) value)));
                     } catch (Exception ignore) {
                     }
                 } else if (value instanceof Number) {
@@ -109,23 +111,26 @@ public class RowValueServiceImpl implements RowValueService {
 
                 var selectValues = selectMap.get(columnId);
                 if (selectValues == null) {
-                    selectValues = selectValueStrategyDao.findAllByTenantIdAndColumnId(tenantId, columnId).stream()
-                            .map(SelectValueStrategyEntity::getValue)
-                            .collect(Collectors.toSet());
+                    selectValues = selectValueStrategyDao
+                            .findAllByTenantIdAndColumnId(tenantId, columnId).stream()
+                            .map(SelectValueStrategyEntity::getValue).collect(Collectors.toSet());
                     selectMap.put(columnId, selectValues);
                 }
 
-                if (type.equals(ColumnType.SELECT_ONE) || type.equals(ColumnType.SELECT_ONE_NUMERIC)) {
+                if (type.equals(ColumnType.SELECT_ONE) || type.equals(
+                        ColumnType.SELECT_ONE_NUMERIC)) {
                     var s = value.toString();
                     if (!selectValues.contains(s)) {
-                        throw new BadRequestException(String.format("require a specified value but got '%s'", s));
+                        throw new BadRequestException(String.format(
+                                "require a specified value but got '%s'", s));
                     }
                     return s;
                 } else if (type.equals(ColumnType.SELECT_MANY)) {
                     var list = (List<String>) value;
                     for (var s : list) {
                         if (!selectValues.contains(s)) {
-                            throw new BadRequestException(String.format("require a specified value in list but got '%s'", s));
+                            throw new BadRequestException(String.format(
+                                    "require a specified value in list but got '%s'", s));
                         }
                     }
                     return JacksonUtil.toJson(list);
@@ -133,7 +138,8 @@ public class RowValueServiceImpl implements RowValueService {
                     var list = (List<Number>) value;
                     for (var n : list) {
                         if (!selectValues.contains(n.toString())) {
-                            throw new BadRequestException(String.format("require a specified value in list but got '%s'", n));
+                            throw new BadRequestException(String.format(
+                                    "require a specified value in list but got '%s'", n));
                         }
                     }
                     return JacksonUtil.toJson(list);
@@ -147,17 +153,20 @@ public class RowValueServiceImpl implements RowValueService {
     private void checkSelectType(Object value, ColumnType type) {
         if (type.equals(ColumnType.SELECT_ONE)) {
             if (!(value instanceof String)) {
-                throw new BadRequestException(String.format("require a string but got %s", value.getClass()));
+                throw new BadRequestException(String.format(
+                        "require a string but got %s", value.getClass()));
             }
         }
         if (type.equals(ColumnType.SELECT_ONE_NUMERIC)) {
             if (!(value instanceof Number)) {
-                throw new BadRequestException(String.format("require a numeric but got %s", value.getClass()));
+                throw new BadRequestException(String.format(
+                        "require a numeric but got %s", value.getClass()));
             }
         }
         if (type.equals(ColumnType.SELECT_MANY) || type.equals(ColumnType.SELECT_MANY_NUMERIC)) {
             if (!(value instanceof List)) {
-                throw new BadRequestException(String.format("require a list but got %s", value.getClass()));
+                throw new BadRequestException(String.format(
+                        "require a list but got %s", value.getClass()));
             }
 
             var list = (List<?>) value;

@@ -1,14 +1,5 @@
 package org.dreamcat.anna.relaxed.component.impl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.dreamcat.anna.relaxed.component.RelatedEntityComponent;
-import org.dreamcat.anna.relaxed.core.RelatedObject;
-import org.dreamcat.common.util.ObjectUtil;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.net.URL;
 import java.util.Collection;
@@ -18,6 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.dreamcat.anna.relaxed.component.RelatedEntityComponent;
+import org.dreamcat.anna.relaxed.core.RelatedObject;
+import org.dreamcat.common.util.ObjectUtil;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
 
 /**
  * Create by tuke on 2020/9/17
@@ -28,6 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Component
 public class RelatedEntityComponentImpl implements RelatedEntityComponent {
+
     /**
      * (entityName, entityClass)
      */
@@ -45,18 +45,25 @@ public class RelatedEntityComponentImpl implements RelatedEntityComponent {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Map<String, Object>> fetchEntities(String entityName, String columnName, Collection<Object> columnValues) {
+    public List<Map<String, Object>> fetchEntities(String entityName, String columnName,
+            Collection<Object> columnValues) {
         var repositories = entityRepositories.get(entityName);
-        if (repositories == null) return Collections.emptyList();
+        if (repositories == null) {
+            return Collections.emptyList();
+        }
         var repository = repositories.get(columnName);
-        if (repository == null) return Collections.emptyList();
+        if (repository == null) {
+            return Collections.emptyList();
+        }
         return repository.apply(columnValues);
     }
 
     @Override
     public RelatedObject findByEntityName(String tableName) {
         var entityClass = relatedObjectClasses.get(tableName);
-        if (entityClass == null) return null;
+        if (entityClass == null) {
+            return null;
+        }
         return relatedObjects.get(entityClass);
     }
 
@@ -67,8 +74,11 @@ public class RelatedEntityComponentImpl implements RelatedEntityComponent {
     }
 
     public void initRelatedObjects(Class<?> baseClass) {
-        if (baseClass == null) initRelatedObjects("");
-        else initRelatedObjects(baseClass.getPackageName());
+        if (baseClass == null) {
+            initRelatedObjects("");
+        } else {
+            initRelatedObjects(baseClass.getPackageName());
+        }
     }
 
     public void initRelatedObjects(String packageName) {
@@ -96,10 +106,14 @@ public class RelatedEntityComponentImpl implements RelatedEntityComponent {
             var tableName = entry.getKey();
             var entityClass = entry.getValue();
             var relatedObject = relatedObjects.get(entityClass);
-            if (relatedObject == null) continue;
+            if (relatedObject == null) {
+                continue;
+            }
 
             var columnNames = relatedObject.getColumnNames();
-            if (ObjectUtil.isEmpty(columnNames)) continue;
+            if (ObjectUtil.isEmpty(columnNames)) {
+                continue;
+            }
 
             var indexes = relatedObject.getIndexes();
             var repositories = entityRepositories.computeIfAbsent(tableName, it -> new HashMap<>());
@@ -122,16 +136,22 @@ public class RelatedEntityComponentImpl implements RelatedEntityComponent {
         }
     }
 
-    private static void findAndFillRelatedObjects(File classFile, String prefix, Map<Class<?>, RelatedObject> relatedObjectCache) {
+    private static void findAndFillRelatedObjects(
+            File classFile, String prefix,
+            Map<Class<?>, RelatedObject> relatedObjectCache) {
         if (classFile.isDirectory()) {
             var files = classFile.listFiles();
-            if (ObjectUtil.isEmpty(files)) return;
+            if (ObjectUtil.isEmpty(files)) {
+                return;
+            }
             for (var file : files) {
                 findAndFillRelatedObjects(file, prefix, relatedObjectCache);
             }
             return;
         }
-        if (!classFile.getPath().contains(".class")) return;
+        if (!classFile.getPath().contains(".class")) {
+            return;
+        }
 
         var path = classFile.getPath();
         // 6 for .class
@@ -151,7 +171,9 @@ public class RelatedEntityComponentImpl implements RelatedEntityComponent {
                 return it.toString();
             } else if (it != null) {
                 return String.format("\"%s\"", it);
-            } else return String.valueOf((Object) null);
+            } else {
+                return String.valueOf((Object) null);
+            }
         }).collect(Collectors.joining(",")) + ")";
     }
 }

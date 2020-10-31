@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NameValuePair {
+
     private String name;
     /**
      * one of String, Number, or Collection

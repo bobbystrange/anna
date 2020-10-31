@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication(scanBasePackages = "org.dreamcat.anna.relaxed")
 public class AnnaRelaxedTestApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(AnnaRelaxedTestApplication.class, args);
     }

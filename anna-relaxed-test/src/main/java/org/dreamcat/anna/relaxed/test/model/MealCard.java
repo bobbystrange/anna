@@ -1,10 +1,9 @@
 package org.dreamcat.anna.relaxed.test.model;
 
+import java.util.List;
 import lombok.Data;
 import org.dreamcat.anna.relaxed.core.annotation.RelatedColumn;
 import org.dreamcat.anna.relaxed.core.annotation.RelatedTable;
-
-import java.util.List;
 
 /**
  * Create by tuke on 2020/9/17
@@ -12,6 +11,7 @@ import java.util.List;
 @Data
 @RelatedTable(tableName = "meal_card", index = {"id", "canteen_id", "student_id"})
 public class MealCard {
+
     private String number;
     private Integer type;
     @RelatedColumn(name = "Canteen", column = "canteen_id", relatedColumn = "id")

@@ -1,5 +1,8 @@
 package org.dreamcat.anna.relaxed.service.impl;
 
+import java.util.HashSet;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.dreamcat.anna.relaxed.config.Auth;
 import org.dreamcat.anna.relaxed.controller.table.query.CreateOrAlterTableQuery;
@@ -17,16 +20,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 /**
  * Create by tuke on 2020/9/14
  */
 @RequiredArgsConstructor
 @Service
 public class TableServiceImpl implements TableService {
+
     // DAO
     private final TableDefDao tableDefDao;
     private final ColumnDefDao columnDefDao;
@@ -120,8 +120,8 @@ public class TableServiceImpl implements TableService {
         if (query.countColumnSize() < queryColumnSize) {
             throw new BadRequestException("duplicate name in columns");
         }
-        var queryColumnMap = queryColumns.stream()
-                .collect(Collectors.toMap(CreateOrAlterTableQuery.ColumnParam::getName, Function.identity()));
+        var queryColumnMap = queryColumns.stream().collect(Collectors.toMap(
+                CreateOrAlterTableQuery.ColumnParam::getName, Function.identity()));
         // db
         var columns = columnDefDao.findAllByTenantIdAndTableId(tenantId, tableId);
         var columnMap = columns.stream()

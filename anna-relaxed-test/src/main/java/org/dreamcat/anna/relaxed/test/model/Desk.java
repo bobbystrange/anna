@@ -1,11 +1,10 @@
 package org.dreamcat.anna.relaxed.test.model;
 
+import java.util.List;
 import lombok.Data;
 import org.dreamcat.anna.relaxed.core.annotation.RelatedColumn;
 import org.dreamcat.anna.relaxed.core.annotation.RelatedColumnField;
 import org.dreamcat.anna.relaxed.core.annotation.RelatedTable;
-
-import java.util.List;
 
 /**
  * Create by tuke on 2020/9/18
@@ -13,6 +12,7 @@ import java.util.List;
 @Data
 @RelatedTable(tableName = "desk", index = {"id", "room_name", "supplier_id"})
 public class Desk {
+
     @RelatedColumnField(column = "room_name")
     private String roomName;
     private Integer height;

@@ -10,6 +10,7 @@ import org.dreamcat.anna.relaxed.core.annotation.RelatedTable;
 @Data
 @RelatedTable(tableName = "door", index = {"id", "code", "supplier_id"})
 public class Door {
+
     private String code;
     private String size;
     @RelatedColumn(name = "Supplier", column = "supplier_id", relatedColumn = "id")

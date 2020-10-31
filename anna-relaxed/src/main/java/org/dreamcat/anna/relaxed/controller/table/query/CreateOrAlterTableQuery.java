@@ -1,19 +1,19 @@
 package org.dreamcat.anna.relaxed.controller.table.query;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import lombok.Data;
 import org.dreamcat.anna.relaxed.core.ColumnType;
 import org.dreamcat.common.web.jackson.GenericDeserialize;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Create by tuke on 2020/9/12
  */
 @Data
 public class CreateOrAlterTableQuery {
+
     @NotEmpty
     @Pattern(regexp = "[a-z][a-z_]+?")
     private String name;
@@ -23,6 +23,7 @@ public class CreateOrAlterTableQuery {
 
     @Data
     public static class ColumnParam {
+
         @NotEmpty
         private String name;
         private String displayName;

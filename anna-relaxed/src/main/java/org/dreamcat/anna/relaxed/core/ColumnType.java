@@ -27,6 +27,7 @@ public enum ColumnType implements IntEnumAttribute {
 
     @javax.persistence.Converter(autoApply = true)
     public static class Converter extends IntEnumAttributeConverter<ColumnType> {
+
         public Converter() {
             super(ColumnType.class);
         }

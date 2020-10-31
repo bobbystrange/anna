@@ -1,11 +1,10 @@
 package org.dreamcat.anna.relaxed.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Create by tuke on 2020/10/15
@@ -15,6 +14,7 @@ import javax.persistence.Table;
 @Table
 @Entity(name = "view_def")
 public class ViewDefEntity extends BaseEntity {
+
     private String name;
     @Column(name = "display_name")
     private String displayName;

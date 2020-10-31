@@ -11,6 +11,7 @@ import org.dreamcat.anna.relaxed.core.annotation.RelatedTable;
 @Data
 @RelatedTable(tableName = "agency", index = {"id", "meal_card_type"})
 public class Agency {
+
     @RelatedColumnField(column = "meal_card_type")
     private Integer mealCardType;
     private String manager;

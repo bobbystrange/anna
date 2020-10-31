@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class AnnaRelaxedApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(AnnaRelaxedApplication.class, args);
     }

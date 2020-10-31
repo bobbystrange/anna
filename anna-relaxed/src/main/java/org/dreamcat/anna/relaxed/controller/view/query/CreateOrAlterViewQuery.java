@@ -1,16 +1,16 @@
 package org.dreamcat.anna.relaxed.controller.view.query;
 
-import lombok.Data;
-
+import java.util.List;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.util.List;
+import lombok.Data;
 
 /**
  * Create by tuke on 2020/10/15
  */
 @Data
 public class CreateOrAlterViewQuery {
+
     @NotEmpty
     @Pattern(regexp = "[A-Za-z][A-Za-z_]+?")
     private String name;
@@ -28,6 +28,7 @@ public class CreateOrAlterViewQuery {
 
     @Data
     public static class FieldParam {
+
         @NotEmpty
         private String name;
         @NotEmpty

@@ -1,6 +1,7 @@
 create database if not exists `anna_relaxed`;
 
-create table if not exists `table_def` (
+create table if not exists `table_def`
+(
     `id`           bigint unsigned not null auto_increment,
     `tenant_id`    bigint unsigned not null,
     `create_time`  timestamp       not null default current_timestamp,
@@ -12,7 +13,8 @@ create table if not exists `table_def` (
 ) engine = InnoDB
   default charset = utf8mb4;
 
-create table if not exists `column_def` (
+create table if not exists `column_def`
+(
     `id`           bigint unsigned   not null auto_increment,
     `tenant_id`    bigint unsigned   not null,
     `create_time`  timestamp         not null default current_timestamp,
@@ -29,7 +31,8 @@ create table if not exists `column_def` (
 ) engine = InnoDB
   default charset = utf8mb4;
 
-create table if not exists `row_data` (
+create table if not exists `row_data`
+(
     `id`            bigint unsigned not null auto_increment,
     `tenant_id`     bigint unsigned not null,
     `create_time`   timestamp       not null default current_timestamp,
@@ -43,7 +46,8 @@ create table if not exists `row_data` (
 ) engine = InnoDB
   default charset = utf8mb4;
 
-create table if not exists `select_value_strategy` (
+create table if not exists `select_value_strategy`
+(
     `id`          bigint unsigned not null auto_increment,
     `tenant_id`   bigint unsigned not null,
     `create_time` timestamp       not null default current_timestamp,
@@ -56,7 +60,8 @@ create table if not exists `select_value_strategy` (
 ) engine = InnoDB
   default charset = utf8mb4;
 
-create table if not exists `view_def` (
+create table if not exists `view_def`
+(
     `id`               bigint unsigned not null auto_increment,
     `tenant_id`        bigint unsigned not null,
     `create_time`      timestamp       not null default current_timestamp,
@@ -71,7 +76,8 @@ create table if not exists `view_def` (
 ) engine = InnoDB
   default charset = utf8mb4;
 
-create table if not exists `view_field_def` (
+create table if not exists `view_field_def`
+(
     `id`           bigint unsigned not null auto_increment,
     `tenant_id`    bigint unsigned not null,
     `create_time`  timestamp       not null default current_timestamp,

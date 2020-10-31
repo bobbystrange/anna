@@ -1,25 +1,26 @@
 package org.dreamcat.anna.relaxed.controller.row.query;
 
-import lombok.Data;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import lombok.Data;
 
 /**
  * Create by tuke on 2020/9/14
  */
 @Data
 public class InsertIntoOrUpdateSetQuery {
+
     private String table;
     @NotEmpty
     private List<Column> columns;
 
     @Data
     public static class Column {
+
         @NotEmpty
         private String name;
         /**

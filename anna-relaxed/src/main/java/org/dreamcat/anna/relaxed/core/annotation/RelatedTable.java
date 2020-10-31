@@ -1,11 +1,10 @@
 package org.dreamcat.anna.relaxed.core.annotation;
 
-import org.dreamcat.common.util.StringUtil;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import org.dreamcat.common.util.StringUtil;
 
 /**
  * Create by tuke on 2020/9/17
@@ -13,6 +12,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RelatedTable {
+
     String tableName();
 
     String[] index() default {"id"};

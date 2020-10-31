@@ -1,12 +1,11 @@
 package org.dreamcat.anna.relaxed.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.dreamcat.anna.relaxed.core.ColumnType;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import org.dreamcat.anna.relaxed.core.ColumnType;
 
 /**
  * Create by tuke on 2020/9/11
@@ -16,6 +15,7 @@ import javax.persistence.Table;
 @Table
 @Entity(name = "column_def")
 public class ColumnDefEntity extends BaseEntity {
+
     @Column(name = "table_id")
     private Long tableId;
     private String name;

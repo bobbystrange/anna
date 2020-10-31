@@ -1,5 +1,9 @@
 package org.dreamcat.anna.relaxed.service.impl;
 
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.dreamcat.anna.relaxed.config.Auth;
 import org.dreamcat.anna.relaxed.controller.row.query.DeleteFromQuery;
@@ -23,17 +27,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 /**
  * Create by tuke on 2020/9/27
  */
 @RequiredArgsConstructor
 @Service
 public class RowServiceImpl implements RowService {
+
     /// DAO
     private final TableDefDao tableDefDao;
     private final ColumnDefDao columnDefDao;
@@ -52,8 +52,8 @@ public class RowServiceImpl implements RowService {
         }
         var tableId = table.getId();
 
-        var queryColumnMap = query.getColumns().stream()
-                .collect(Collectors.toMap(InsertIntoOrUpdateSetQuery.Column::getName, Function.identity()));
+        var queryColumnMap = query.getColumns().stream().collect(
+                Collectors.toMap(InsertIntoOrUpdateSetQuery.Column::getName, Function.identity()));
         if (query.countColumnSize() < queryColumnMap.size()) {
             return RestBody.error("duplicate name in columns");
         }
@@ -72,14 +72,18 @@ public class RowServiceImpl implements RowService {
         var primaryColumnName = primaryColumn.getName();
         var primaryQueryColumn = queryColumnMap.get(primaryColumnName);
         if (primaryQueryColumn == null) {
-            throw new BadRequestException(String.format("primary column '%s' is required", primaryColumnName));
+            throw new BadRequestException(String.format(
+                    "primary column '%s' is required", primaryColumnName));
         }
         var primaryValueObject = primaryQueryColumn.getValue();
         if (!(primaryValueObject instanceof String) && !(primaryValueObject instanceof Number)) {
-            throw new BadRequestException(String.format("primary column '%s' has wrong type (String/Number is required)", primaryColumnName));
+            throw new BadRequestException(String.format(
+                    "primary column '%s' has wrong type (String/Number is required)",
+                    primaryColumnName));
         }
         var primaryValue = primaryValueObject.toString();
-        var rows = rowDataDao.findAllByTenantIdAndColumnIdAndPrimaryValue(tenantId, primaryColumnId, primaryValue);
+        var rows = rowDataDao.findAllByTenantIdAndColumnIdAndPrimaryValue(
+                tenantId, primaryColumnId, primaryValue);
         if (!rows.isEmpty()) {
             return RestBody.error("duplicate value in primary key column");
         }
@@ -107,7 +111,8 @@ public class RowServiceImpl implements RowService {
             row.setColumnId(columnId);
             row.setPrimaryValue(primaryValue);
 
-            var literal = rowValueService.formatToLiteral(value, column.getType(), valueStrategy.atColumn(columnId));
+            var literal = rowValueService.formatToLiteral(
+                    value, column.getType(), valueStrategy.atColumn(columnId));
             row.setValue(literal);
         }
 
@@ -167,12 +172,14 @@ public class RowServiceImpl implements RowService {
 
             var value = row.getValue();
             if (value == null) {
-                throw new InternalServerErrorException(String.format("row '%s' in table '%s' has damaged", primaryValue, name));
+                throw new InternalServerErrorException(String.format(
+                        "row '%s' in table '%s' has damaged", primaryValue, name));
             }
             try {
                 list.add(new NameValuePair(queryColumn, rowValueService.parseLiteral(value, type)));
             } catch (Exception ignore) {
-                throw new InternalServerErrorException(String.format("row '%s' in table '%s' has damaged", primaryValue, name));
+                throw new InternalServerErrorException(String.format(
+                        "row '%s' in table '%s' has damaged", primaryValue, name));
             }
         }
 
@@ -210,16 +217,21 @@ public class RowServiceImpl implements RowService {
         var primaryColumnName = primaryColumn.getName();
         var primaryQueryColumn = queryColumnMap.get(primaryColumnName);
         if (primaryQueryColumn == null) {
-            throw new BadRequestException(String.format("primary column '%s' is required", primaryColumnName));
+            throw new BadRequestException(String.format(
+                    "primary column '%s' is required", primaryColumnName));
         }
         var primaryValueObject = primaryQueryColumn.getValue();
         if (!(primaryValueObject instanceof String) && !(primaryValueObject instanceof Number)) {
-            return RestBody.error(String.format("primary column '%s' has wrong type (String/Number is required)", primaryColumnName));
+            return RestBody.error(String.format(
+                    "primary column '%s' has wrong type (String/Number is required)",
+                    primaryColumnName));
         }
         var primaryValue = primaryValueObject.toString();
-        var rows = rowDataDao.findAllByTenantIdAndColumnIdAndPrimaryValue(tenantId, primaryColumnId, primaryValue);
+        var rows = rowDataDao.findAllByTenantIdAndColumnIdAndPrimaryValue(tenantId, primaryColumnId,
+                primaryValue);
         if (rows.isEmpty()) {
-            return RestBody.error(String.format("primary key value '%s' in table '%s' is not found", name, primaryValue));
+            return RestBody.error(String.format(
+                    "primary key value '%s' in table '%s' is not found", name, primaryValue));
         }
 
         var rowMap = rows.stream()
@@ -232,7 +244,8 @@ public class RowServiceImpl implements RowService {
             var columnName = column.getName();
             var queryColumn = queryColumnMap.get(columnName);
             if (queryColumn == null) {
-                throw new BadRequestException(String.format("column '%s' in table '%s' doesn't exist", columnName, table.getName()));
+                throw new BadRequestException(String.format(
+                        "column '%s' in table '%s' doesn't exist", columnName, table.getName()));
             }
             var value = queryColumn.getValue();
 
@@ -245,7 +258,8 @@ public class RowServiceImpl implements RowService {
                 row.setPrimaryValue(primaryValue);
             }
 
-            var literal = rowValueService.formatToLiteral(value, column.getType(), valueStrategy.atColumn(columnId));
+            var literal = rowValueService.formatToLiteral(
+                    value, column.getType(), valueStrategy.atColumn(columnId));
             row.setValue(literal);
             saveRows.add(row);
         }

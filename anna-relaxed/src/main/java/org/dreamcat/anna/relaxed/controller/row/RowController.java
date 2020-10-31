@@ -1,5 +1,6 @@
 package org.dreamcat.anna.relaxed.controller.row;
 
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.dreamcat.anna.relaxed.config.AppConfig;
 import org.dreamcat.anna.relaxed.controller.row.query.DeleteFromQuery;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-
 /**
  * Create by tuke on 2020/9/27
  */
@@ -22,6 +21,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(path = AppConfig.API_VERSION + "/row", method = RequestMethod.POST)
 public class RowController {
+
     private final RowService service;
 
     @RequestMapping(path = "insert")

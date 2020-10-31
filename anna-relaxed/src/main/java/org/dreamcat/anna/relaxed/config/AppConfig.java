@@ -7,5 +7,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class AppConfig {
+
     public static final String API_VERSION = "/api/v1";
 }

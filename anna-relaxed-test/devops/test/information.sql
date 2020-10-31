@@ -123,7 +123,8 @@ select *
 from door;
 
 -- Student
-create table student (
+create table student
+(
     id          bigint unsigned primary key,
     number      varchar(255),
     name        varchar(255),
@@ -138,7 +139,8 @@ insert into student
 values (3, 'student_number_3', 'student_name_3', 'person_code_2', 1);
 
 -- MealCard
-create table meal_card (
+create table meal_card
+(
     id         bigint unsigned primary key,
     number     varchar(255),
     type       smallint unsigned,
@@ -159,7 +161,8 @@ insert into meal_card
 values (6, 'meal_card_number_6', 3, 2, 4);
 
 -- Canteen
-create table canteen (
+create table canteen
+(
     id       bigint unsigned primary key,
     location varchar(255),
     level    smallint unsigned
@@ -174,7 +177,8 @@ insert into canteen
 values (4, 'south', 4);
 
 -- Agency
-create table agency (
+create table agency
+(
     id             bigint unsigned primary key,
     meal_card_type smallint unsigned,
     manager        varchar(255)
@@ -193,7 +197,8 @@ insert into agency
 values (6, 3, 'agency_3');
 
 -- Person
-create table person (
+create table person
+(
     id     bigint unsigned primary key,
     code   varchar(255),
     age    smallint unsigned,
@@ -207,7 +212,8 @@ insert into person
 values (3, 'person_code_3', 80, 0);
 
 -- Suits
-create table suits (
+create table suits
+(
     id        bigint unsigned primary key,
     person_id bigint unsigned,
     number    varchar(255)
@@ -226,7 +232,8 @@ insert into suits
 values (6, 2, 'suits-6');
 
 -- Suits
-create table suit (
+create table suit
+(
     id        bigint unsigned primary key,
     suits_id  bigint unsigned,
     person_id bigint unsigned,
@@ -263,7 +270,8 @@ values (12, 6, 2, 1, 250, 'yellow');
 Maintenance<seq, standard>
 SuitMaintenanceRelation<suit_id, maintenance_seq>
  */
-create table suit_maintenance_relation (
+create table suit_maintenance_relation
+(
     id              bigint unsigned primary key auto_increment,
     suit_id         bigint unsigned,
     maintenance_seq varchar(255)
@@ -346,7 +354,8 @@ insert into suit_maintenance_relation(suit_id, maintenance_seq)
 values (12, 'maintenance_seq_1');
 
 -- Maker
-create table maker (
+create table maker
+(
     id    bigint unsigned primary key,
     name  varchar(255),
     title varchar(255)
@@ -359,7 +368,8 @@ insert into maker
 values (3, 'maker_name_3', 'maker_title_3');
 
 -- Room
-create table room (
+create table room
+(
     id        bigint unsigned primary key,
     name      varchar(255),
     area      int unsigned,
@@ -373,7 +383,8 @@ insert into room
 values (3, 'room_name_3', 55, 'door_code_3');
 
 -- Desk
-create table desk (
+create table desk
+(
     id          bigint unsigned primary key,
     room_name   varchar(255),
     height      int unsigned,
@@ -397,7 +408,8 @@ insert into desk
 values (8, 'room_name_3', 105, 4);
 
 -- Chair
-create table chair (
+create table chair
+(
     id          bigint unsigned primary key,
     desk_id     bigint unsigned,
     seq         varchar(255),
@@ -440,7 +452,8 @@ insert into chair
 values (17, 1, 'chair_seq_2', 200, 4);
 
 -- ChairMaintenanceRelation
-create table chair_maintenance_relation (
+create table chair_maintenance_relation
+(
     id             bigint unsigned primary key,
     chair_seq      varchar(255),
     maintenance_id bigint unsigned
@@ -475,7 +488,8 @@ insert into chair_maintenance_relation
 values (14, 'chair_seq_4', 7);
 
 -- Maintenance
-create table maintenance (
+create table maintenance
+(
     id       bigint unsigned primary key,
     seq      varchar(255),
     standard varchar(255)
@@ -498,7 +512,8 @@ insert into maintenance
 values (8, 'maintenance_seq_4', 'maintenance_standard_8');
 
 -- Supplier
-create table supplier (
+create table supplier
+(
     id   bigint unsigned primary key,
     name varchar(255)
 );
@@ -513,7 +528,8 @@ values (4, 'supplier_name_4');
 
 
 -- Door
-create table door (
+create table door
+(
     id          bigint unsigned primary key,
     code        varchar(255),
     supplier_id bigint unsigned,

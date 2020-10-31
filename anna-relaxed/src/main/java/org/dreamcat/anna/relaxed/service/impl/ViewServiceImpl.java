@@ -1,5 +1,13 @@
 package org.dreamcat.anna.relaxed.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.dreamcat.anna.relaxed.component.ExpressionComponent;
 import org.dreamcat.anna.relaxed.component.ReachabilityComponent;
@@ -24,21 +32,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 /**
  * Create by tuke on 2020/10/15
  */
 @RequiredArgsConstructor
 @Service
 public class ViewServiceImpl implements ViewService {
+
     // DAO
     private final ViewDefDao viewDefDao;
     private final ViewFieldDefDao viewFieldDefDao;
@@ -147,8 +147,8 @@ public class ViewServiceImpl implements ViewService {
         if (query.countFieldSize() < queryFieldSize) {
             throw new BadRequestException("duplicate name in fields");
         }
-        var queryFieldMap = queryFields.stream()
-                .collect(Collectors.toMap(CreateOrAlterViewQuery.FieldParam::getName, Function.identity()));
+        var queryFieldMap = queryFields.stream().collect(Collectors.toMap(
+                CreateOrAlterViewQuery.FieldParam::getName, Function.identity()));
         // db
         var fields = viewFieldDefDao.findAllByTenantIdAndViewId(tenantId, viewId);
         var fieldMap = fields.stream()
@@ -212,7 +212,8 @@ public class ViewServiceImpl implements ViewService {
         var expressions = extractExpressions(queryFieldList, viewId, tenantId, result);
         var context = new ConditionArgContext();
         context.setConditionArgs(query.getConditionArgs());
-        var values = expressionComponent.parse(expressions, view.getSourceTable(), view.getSourceColumn(), query.getValue(), context);
+        var values = expressionComponent.parse(expressions,
+                view.getSourceTable(), view.getSourceColumn(), query.getValue(), context);
         for (int i = 0, len = result.size(); i < len; i++) {
             result.get(i).setValue(CollectionUtil.elementAt(values, i));
         }
@@ -223,10 +224,13 @@ public class ViewServiceImpl implements ViewService {
     @Override
     public RestBody<Map<String, ?>> queryViewAsMap(QueryViewQuery query) {
         return queryViewAsMap(query, args -> expressionComponent.parseAsMap(
-                (List<String>) args[0], (String) args[1], (String) args[2], (String) args[3], (ConditionArgContext) args[4]));
+                (List<String>) args[0],
+                (String) args[1], (String) args[2], (String) args[3],
+                (ConditionArgContext) args[4]));
     }
 
-    private RestBody<Map<String, ?>> queryViewAsMap(QueryViewQuery query, ObjectArrayFunction<Map<String, ?>> parser) {
+    private RestBody<Map<String, ?>> queryViewAsMap(QueryViewQuery query,
+            ObjectArrayFunction<Map<String, ?>> parser) {
         var tenantId = Auth.getTenantId();
         var name = query.getView();
         var queryFieldList = query.getFields();
@@ -237,7 +241,10 @@ public class ViewServiceImpl implements ViewService {
         var expressions = extractExpressions(queryFieldList, viewId, tenantId, null);
         var context = new ConditionArgContext();
         context.setConditionArgs(query.getConditionArgs());
-        var result = parser.apply(expressions, view.getSourceTable(), view.getSourceColumn(), query.getValue(), context);
+        var result = parser.apply(
+                expressions,
+                view.getSourceTable(), view.getSourceColumn(), query.getValue(),
+                context);
         return RestBody.ok(result);
     }
 
@@ -249,7 +256,8 @@ public class ViewServiceImpl implements ViewService {
         return view;
     }
 
-    private List<String> extractExpressions(List<String> queryFieldList, Long viewId, Long tenantId, ArrayList<NameValuePair> list) {
+    private List<String> extractExpressions(List<String> queryFieldList, Long viewId, Long tenantId,
+            ArrayList<NameValuePair> list) {
         var fields = viewFieldDefDao.findAllByTenantIdAndViewId(tenantId, viewId);
         Set<String> queryFields = Collections.emptySet();
         if (queryFieldList != null) {
@@ -262,11 +270,17 @@ public class ViewServiceImpl implements ViewService {
         var queryFieldNotEmpty = !queryFields.isEmpty();
         var size = queryFieldNotEmpty ? queryFields.size() : fields.size();
         var expressions = new ArrayList<String>(size);
-        if (list != null) list.ensureCapacity(size);
+        if (list != null) {
+            list.ensureCapacity(size);
+        }
         for (var field : fields) {
             var fieldName = field.getName();
-            if (queryFieldNotEmpty && queryFields.contains(fieldName)) continue;
-            if (list != null) list.add(new NameValuePair(fieldName));
+            if (queryFieldNotEmpty && queryFields.contains(fieldName)) {
+                continue;
+            }
+            if (list != null) {
+                list.add(new NameValuePair(fieldName));
+            }
             expressions.add(field.getExpression());
         }
         return expressions;

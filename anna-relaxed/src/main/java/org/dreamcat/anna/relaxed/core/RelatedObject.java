@@ -1,6 +1,12 @@
 package org.dreamcat.anna.relaxed.core;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,13 +16,6 @@ import org.dreamcat.anna.relaxed.core.annotation.RelatedTable;
 import org.dreamcat.common.util.ObjectUtil;
 import org.dreamcat.common.util.ReflectUtil;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * Create by tuke on 2020/9/16
  */
@@ -25,6 +24,7 @@ import java.util.Set;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RelatedObject {
+
     /**
      * real db column name
      */
@@ -62,11 +62,15 @@ public class RelatedObject {
 
     private static void parseNode(Node node, Class<?> entityClass) {
         var relatedTable = ReflectUtil.retrieveAnnotation(entityClass, RelatedTable.class);
-        if (relatedTable == null) return;
+        if (relatedTable == null) {
+            return;
+        }
 
         // type
         var tableName = relatedTable.tableName();
-        if (ObjectUtil.isBlank(tableName)) return;
+        if (ObjectUtil.isBlank(tableName)) {
+            return;
+        }
         var nameColumnStrategy = relatedTable.nameColumnStrategy();
         var nameStyle = relatedTable.nameStyle();
         var columnStyle = relatedTable.columnStyle();
@@ -91,7 +95,9 @@ public class RelatedObject {
                 var columnName = relatedColumn.column();
                 var relatedColumnName = relatedColumn.relatedColumn();
 
-                if (ObjectUtil.isBlank(name)) name = field.getName();
+                if (ObjectUtil.isBlank(name)) {
+                    name = field.getName();
+                }
                 if (ObjectUtil.isBlank(columnName) || ObjectUtil.isBlank(relatedColumnName)) {
                     continue;
                 }
@@ -101,13 +107,17 @@ public class RelatedObject {
                 if (fieldType.equals(List.class) || fieldType.equals(Set.class)) {
                     fieldType = ReflectUtil.getTypeArgument(field);
                 }
-                if (node.hasLoop(fieldType)) continue;
+                if (node.hasLoop(fieldType)) {
+                    continue;
+                }
 
                 var childNode = new Node(node, name);
                 node.getChildNodes().add(childNode);
                 parseNode(childNode, fieldType);
                 RelatedObject child = childNode.relatedObject;
-                if (child == null) continue;
+                if (child == null) {
+                    continue;
+                }
 
                 child.setRelatedColumnName(columnName);
                 child.setColumnName(relatedColumnName);
@@ -148,6 +158,7 @@ public class RelatedObject {
 
     @NoArgsConstructor
     private static class Node {
+
         Node parent;
         Set<Node> childNodes;
         Class<?> entityClass;
@@ -161,7 +172,9 @@ public class RelatedObject {
 
         boolean hasLoop(Class<?> clazz) {
             for (Node n = parent; n != null; n = n.parent) {
-                if (n.entityClass == clazz) return true;
+                if (n.entityClass == clazz) {
+                    return true;
+                }
             }
             return false;
         }
