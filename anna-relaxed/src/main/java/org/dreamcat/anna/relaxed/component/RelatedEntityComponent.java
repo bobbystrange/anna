@@ -3,7 +3,7 @@ package org.dreamcat.anna.relaxed.component;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.dreamcat.anna.relaxed.core.RelatedObject;
+import org.dreamcat.anna.relaxed.common.RelatedObject;
 
 /**
  * Create by tuke on 2020/9/15

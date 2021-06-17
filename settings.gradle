@@ -1,3 +1,4 @@
 rootProject.name = 'anna'
 include 'anna-relaxed'
 include 'anna-relaxed-test'
+include 'anna-core'

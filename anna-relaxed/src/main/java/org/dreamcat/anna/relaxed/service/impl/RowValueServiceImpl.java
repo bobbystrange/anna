@@ -8,15 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.dreamcat.anna.relaxed.core.ColumnType;
-import org.dreamcat.anna.relaxed.core.ValueStrategy;
+import org.dreamcat.anna.relaxed.common.ColumnType;
+import org.dreamcat.anna.relaxed.common.ValueStrategy;
 import org.dreamcat.anna.relaxed.dao.SelectValueStrategyDao;
 import org.dreamcat.anna.relaxed.entity.SelectValueStrategyEntity;
 import org.dreamcat.anna.relaxed.service.RowValueService;
-import org.dreamcat.common.util.StringUtil;
+import org.dreamcat.common.text.NumericSearcher;
 import org.dreamcat.common.util.TimeUtil;
 import org.dreamcat.common.web.exception.BadRequestException;
-import org.dreamcat.common.web.jackson.JacksonUtil;
+import org.dreamcat.common.x.jackson.JacksonUtil;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,7 +36,7 @@ public class RowValueServiceImpl implements RowValueService {
                 return value;
             }
             case NUMERIC -> {
-                var pair = StringUtil.extractNumber(value);
+                var pair = NumericSearcher.extractNumber(value);
                 // value is not a number
                 if (pair.second() != value.length()) {
                     return null;

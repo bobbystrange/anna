@@ -8,7 +8,7 @@ import org.dreamcat.anna.relaxed.config.AppConfig;
 import org.dreamcat.anna.relaxed.controller.view.query.CreateOrAlterViewQuery;
 import org.dreamcat.anna.relaxed.controller.view.query.QueryViewQuery;
 import org.dreamcat.anna.relaxed.controller.view.result.DescViewResult;
-import org.dreamcat.anna.relaxed.core.NameValuePair;
+import org.dreamcat.anna.relaxed.common.NameValuePair;
 import org.dreamcat.anna.relaxed.service.ViewService;
 import org.dreamcat.common.web.core.RestBody;
 import org.springframework.web.bind.annotation.RequestBody;

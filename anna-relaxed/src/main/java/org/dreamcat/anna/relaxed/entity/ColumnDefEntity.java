@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import org.dreamcat.anna.relaxed.core.ColumnType;
+import org.dreamcat.anna.relaxed.common.ColumnType;
 
 /**
  * Create by tuke on 2020/9/11

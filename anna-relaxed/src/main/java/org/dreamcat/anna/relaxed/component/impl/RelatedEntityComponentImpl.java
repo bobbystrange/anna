@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dreamcat.anna.relaxed.component.RelatedEntityComponent;
-import org.dreamcat.anna.relaxed.core.RelatedObject;
+import org.dreamcat.anna.relaxed.common.RelatedObject;
 import org.dreamcat.common.util.ObjectUtil;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;

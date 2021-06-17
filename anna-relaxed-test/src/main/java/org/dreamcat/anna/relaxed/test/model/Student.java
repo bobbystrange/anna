@@ -2,9 +2,9 @@ package org.dreamcat.anna.relaxed.test.model;
 
 import java.util.List;
 import lombok.Data;
-import org.dreamcat.anna.relaxed.core.annotation.RelatedColumn;
-import org.dreamcat.anna.relaxed.core.annotation.RelatedColumnField;
-import org.dreamcat.anna.relaxed.core.annotation.RelatedTable;
+import org.dreamcat.anna.relaxed.common.annotation.RelatedColumn;
+import org.dreamcat.anna.relaxed.common.annotation.RelatedColumnField;
+import org.dreamcat.anna.relaxed.common.annotation.RelatedTable;
 
 /**
  * Create by tuke on 2020/9/17

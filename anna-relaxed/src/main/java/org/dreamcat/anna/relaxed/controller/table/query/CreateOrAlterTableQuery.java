@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import lombok.Data;
-import org.dreamcat.anna.relaxed.core.ColumnType;
+import org.dreamcat.anna.relaxed.common.ColumnType;
 import org.dreamcat.common.web.jackson.GenericDeserialize;
 
 /**

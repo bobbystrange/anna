@@ -1,0 +1,23 @@
+@startuml
+
+' The only difference between actor
+'and participant is the drawing
+
+actor Foo1 #red
+boundary Foo2
+control "Foo3()" order 2
+entity Foo4 order 1
+database Foo5
+collections "I have a really\nlong name" as Foo6  #99FF99
+/' You can also declare:
+collections Foo6 as "I have a really\nlong name" #99FF99
+'/
+
+Foo1 -> Foo2 : To boundary
+Foo1 -> "Foo3()" : To control
+Foo1 -> Foo4 : To entity
+Foo1 -> Foo5 : To database
+Foo1 -> Foo6 : To collections
+Foo1 -> Foo1 : To actor
+@enduml
+

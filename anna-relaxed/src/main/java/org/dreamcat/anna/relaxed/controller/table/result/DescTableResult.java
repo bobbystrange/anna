@@ -2,7 +2,7 @@ package org.dreamcat.anna.relaxed.controller.table.result;
 
 import java.util.List;
 import lombok.Data;
-import org.dreamcat.anna.relaxed.core.ColumnType;
+import org.dreamcat.anna.relaxed.common.ColumnType;
 
 /**
  * Create by tuke on 2020/9/27

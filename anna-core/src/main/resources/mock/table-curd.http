@@ -1,0 +1,4 @@
+###
+POST {{base_url}}/table
+Content-Type: application/json
+

@@ -4,10 +4,9 @@ apply plugin: 'io.spring.dependency-management'
 dependencies {
     implementation project(':anna-relaxed')
 
-    implementation "org.dreamcat:common-core:0.0.1"
-    implementation "org.dreamcat:common-x:0.0.1"
-    implementation "org.dreamcat:common-web:0.0.1"
-    implementation "org.dreamcat:common-webmvc:0.0.1"
+    implementation "org.dreamcat:common-core:$COMMON_VERSION"
+    implementation "org.dreamcat:common-x:$COMMON_VERSION"
+    implementation "org.dreamcat:common-web:$COMMON_VERSION"
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     compileOnly 'org.springframework.boot:spring-boot-configuration-processor'

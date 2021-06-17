@@ -3,8 +3,8 @@ package org.dreamcat.anna.relaxed.component;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.dreamcat.anna.relaxed.core.RelatedObject;
-import org.dreamcat.anna.relaxed.core.condition.ConditionArgContext;
+import org.dreamcat.anna.relaxed.common.RelatedObject;
+import org.dreamcat.anna.relaxed.common.condition.ConditionArgContext;
 
 /**
  * Create by tuke on 2020/10/22

@@ -1,7 +1,7 @@
 package org.dreamcat.anna.relaxed.service;
 
-import org.dreamcat.anna.relaxed.core.ColumnType;
-import org.dreamcat.anna.relaxed.core.ValueStrategy;
+import org.dreamcat.anna.relaxed.common.ColumnType;
+import org.dreamcat.anna.relaxed.common.ValueStrategy;
 
 /**
  * Create by tuke on 2020/9/14
